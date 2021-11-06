@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
+    - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
+      propertyPath: offset
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
 --- !u!1001 &5868139079455776804
@@ -203,6 +207,18 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.23885171
       objectReference: {fileID: 0}
+    - target: {fileID: 7033347185196167208, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
+      propertyPath: size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033347185196167208, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
+      propertyPath: tick
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7033347185196167208, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
+      propertyPath: bodyPrefab
+      value: 
+      objectReference: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
     - target: {fileID: 7238616367967052404, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
       propertyPath: m_RootOrder
       value: 1

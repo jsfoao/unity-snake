@@ -1,7 +1,10 @@
 using System;
 using TMPro.SpriteAssetUtilities;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Direction = UnityEngine.Direction;
+using Slider = UnityEngine.UI.Slider;
 
 public class Map : MonoBehaviour
 {
@@ -11,6 +14,7 @@ public class Map : MonoBehaviour
     [SerializeField] private float offset;
     [NonSerialized] public Tile[,] tileGrid;
     
+    // Spawn size.x * size.y tiles
     private void GenerateMap()
     {
         tileGrid = new Tile[size.x, size.y];
@@ -32,11 +36,33 @@ public class Map : MonoBehaviour
     }
     
     // Check if neighbour is valid (exists)
-    private bool ValidNeighbour(Tile tile, Vector2Int positionToCheck)
+    private bool IsEdgeTile(Tile tile, Vector2Int positionToCheck)
     {
-        if (positionToCheck.x >= size.x || positionToCheck.x < 0) { return false; }
-        if (positionToCheck.y >= size.y || positionToCheck.y < 0) { return false; }
-        return true;
+        // Right edge
+        if (positionToCheck.x >= size.x)
+        {
+            tile.neighbourTiles[(int) Direction.Right] = tileGrid[0, positionToCheck.y];
+            return true;
+        }
+        // Left edge
+        if (positionToCheck.x < 0)
+        {
+            tile.neighbourTiles[(int) Direction.Left] = tileGrid[size.x - 1, positionToCheck.y];
+            return true;
+        }
+        // Up edge
+        if (positionToCheck.y >= size.y)
+        {
+            tile.neighbourTiles[(int) Direction.Up] = tileGrid[positionToCheck.x, 0];
+            return true;
+        }
+        // Down edge
+        if (positionToCheck.y < 0)
+        {
+            tile.neighbourTiles[(int) Direction.Down] = tileGrid[positionToCheck.x, size.y - 1];
+            return true;
+        }
+        return false;
     }
 
     // Check all neighbours around singular tile
@@ -44,30 +70,23 @@ public class Map : MonoBehaviour
     {
         // Defining positions around tile to check
         Vector2Int position = tile.gridPosition;
-        Vector2Int positionLeft = new Vector2Int(position.x - 1, position.y);
-        Vector2Int positionRight = new Vector2Int(position.x + 1, position.y);
-        Vector2Int positionDown = new Vector2Int(position.x, position.y - 1);
-        Vector2Int positionUp = new Vector2Int(position.x, position.y + 1);
         
-        // left neighbour
-        if (ValidNeighbour(tile, positionLeft))
+        // Four possible neighbour positions around tile
+        Vector2Int[] positions = new[]
         {
-            tile.neighbourTileLeft = tileGrid[positionLeft.x, positionLeft.y];
-        }
-        // right neighbour
-        if (ValidNeighbour(tile, positionRight))
+            new Vector2Int(position.x - 1, position.y), // left
+            new Vector2Int(position.x + 1, position.y), // right
+            new Vector2Int(position.x, position.y - 1), // down
+            new Vector2Int(position.x, position.y + 1)  // up
+        };
+
+        // Check validity of all positions
+        for (int i = 0; i < positions.Length; i++)
         {
-            tile.neighbourTileRight = tileGrid[positionRight.x, positionRight.y];
-        }
-        // down neighbour
-        if (ValidNeighbour(tile, positionDown))
-        {
-            tile.neighbourTileDown = tileGrid[positionDown.x, positionDown.y];
-        }
-        // up neighbour
-        if (ValidNeighbour(tile, positionUp))
-        {
-            tile.neighbourTileUp = tileGrid[positionUp.x, positionUp.y];
+            if (!IsEdgeTile(tile, positions[i]))
+            {
+                tile.neighbourTiles[i] = tileGrid[positions[i].x, positions[i].y];
+            }
         }
     }
 

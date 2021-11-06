@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7238616367967052404}
   - component: {fileID: 3666804176219160300}
   m_Layer: 0
-  m_Name: SnakeBody
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 762eeefe8d97adc48bd2b36e24ea0d4c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.23921569, g: 0.7372549, b: 0.21960784, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
