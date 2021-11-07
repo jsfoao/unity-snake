@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace System.Collections.Generic
 {
     public interface ILinkedList<T>

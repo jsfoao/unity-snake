@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.WSA;
 
 // snake will depend on map to work
 // snake will move dependent on tile grid
@@ -7,9 +10,8 @@ using UnityEngine;
 // head of snake will control movement
 public class SnakeController : MonoBehaviour, IEntityController
 {
-    [SerializeField] private int size;
+    [SerializeField] [Range(1, 100)] private int size;
     private Direction direction;
-    private Tile currentTile;
     private Map map;
     private Transform _transform;
     private Vector2 worldPosition;
@@ -21,62 +23,67 @@ public class SnakeController : MonoBehaviour, IEntityController
 
     [Header("Temp")] [SerializeField] 
     private GameObject bodyPrefab;
-    private GameObject head;
+    
+    private List<Body> bodyParts;
 
-    private List<BodyNode> bodyNodes;
-
+    private void AddBody()
+    {
+        GameObject bodyGameObject;
+        Body body;
+        if (bodyParts.Count == 0)
+        {
+            bodyGameObject = Instantiate(bodyPrefab, map.tileGrid[0, 0].worldPosition, Quaternion.identity, transform);
+            bodyGameObject.name = "Body_0";
+            body = bodyGameObject.GetComponent<Body>();
+            body.previous = null;
+            body.currentTile = map.tileGrid[0, 0];
+            bodyParts.Add(body);
+        }
+        else
+        {
+            Body tail = bodyParts[bodyParts.Count - 1];
+            bodyGameObject = Instantiate(bodyPrefab,
+                tail.currentTile.neighbourTiles[(int) Direction.Down].worldPosition, 
+                Quaternion.identity, transform);
+            bodyGameObject.name = $"Body_{bodyParts.Count}";
+            body = bodyGameObject.GetComponent<Body>();
+            body.previous = tail;
+            body.currentTile = tail.currentTile.neighbourTiles[(int) Direction.Down];
+            bodyParts.Add(body);
+        }
+    }
+    
     private void CalculateBody()
     {
-        BodyNode node = bodyNodes[bodyNodes.Count - 1];
+        // Start traversing from tail
+        Body body = bodyParts[bodyParts.Count - 1];
 
-        while (node.previous != null)
+        while (body.previous != null)
         {
-            MoveToTile(node, node.previous.currentTile);
-            node = node.previous;
+            body.MoveToTile(body.previous.currentTile);
+            body = body.previous;
         }
     }
-    
+
     private void SpawnSnake()
     {
-        int bodyCounter = 1;
-        Tile currentTileToSpawn = currentTile.neighbourTiles[(int) Direction.Down];
-
-        BodyNode lastBodyNode = head.GetComponent<BodyNode>();
-        lastBodyNode.currentTile = currentTile;
-        
-        while (bodyCounter < size)
+        for (int i = 0; i < size; i++)
         {
-            GameObject bodyPart = Instantiate(bodyPrefab, currentTileToSpawn.worldPosition, Quaternion.identity, transform);
-            bodyPart.name = $"Body_{bodyCounter}";
-            BodyNode bodyNode = bodyPart.GetComponent<BodyNode>();
-            
-            bodyNodes.Add(bodyNode);
-            
-            bodyNode.previous = lastBodyNode;
-            lastBodyNode = bodyNode;
-            
-            lastBodyNode.currentTile = currentTileToSpawn;
-            
-            currentTileToSpawn = currentTileToSpawn.neighbourTiles[(int) Direction.Down];
-            bodyCounter++;
+            AddBody();
         }
     }
-    
-    public void MoveToTile(BodyNode node, Tile tile)
-    {
-        if (tile == null) { return; }
-        node.transform.position = tile.worldPosition;
-        node.currentTile = tile;
-        currentTile = tile;
-    }
-    
+
     private void TickMovement()
     {
         currentTime -= Time.deltaTime;
         if (!(currentTime <= 0)) return;
         
-        MoveToTile(head.GetComponent<BodyNode>(), currentTile.neighbourTiles[(int)direction]);
+        // Calculate body parts
         CalculateBody();
+
+        // Move head of snake to tile set by input
+        bodyParts[0].MoveToTile(bodyParts[0].currentTile.neighbourTiles[(int)direction]);
+
         currentTime = tick;
     }
     
@@ -98,7 +105,11 @@ public class SnakeController : MonoBehaviour, IEntityController
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             direction = Direction.Down;
-        }   
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            AddBody();
+        }
     }
     
     private void Update()
@@ -110,13 +121,9 @@ public class SnakeController : MonoBehaviour, IEntityController
     // Do after map spawning
     private void Start()
     {
-        bodyNodes = new List<BodyNode>();
         map = FindObjectOfType<Map>();
-        currentTile = map.tileGrid[0, 0];
-        head = transform.GetChild(0).gameObject;
-        _transform = head.transform;
+        bodyParts = new List<Body>();
         direction = Direction.Up;
-        
         SpawnSnake();
     }
 }
