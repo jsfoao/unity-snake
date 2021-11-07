@@ -38,10 +38,6 @@ sysinfo.txt
 *.unitypackage
 *.log
 *.asset
-*.asset
-*.asset
-*.asset
-*.log
 *.xml
-*.asset
-*.log
+*.exe0.log
+*.json
