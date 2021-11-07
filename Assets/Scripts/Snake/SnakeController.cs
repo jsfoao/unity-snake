@@ -23,34 +23,63 @@ public class SnakeController : MonoBehaviour, IEntityController
     private GameObject bodyPrefab;
     private GameObject head;
 
-    private LinkedList<GameObject> snakeBody;
+    private List<BodyNode> bodyNodes;
 
+    private void CalculateBody()
+    {
+        BodyNode node = bodyNodes[bodyNodes.Count - 1];
+
+        while (node.previous != null)
+        {
+            MoveToTile(node, node.previous.currentTile);
+            node = node.previous;
+        }
+    }
+    
     private void SpawnSnake()
     {
-        int bodyCounter = 0;
+        int bodyCounter = 1;
         Tile currentTileToSpawn = currentTile.neighbourTiles[(int) Direction.Down];
-        while (bodyCounter < size - 1)
+
+        BodyNode lastBodyNode = head.GetComponent<BodyNode>();
+        lastBodyNode.currentTile = currentTile;
+        
+        while (bodyCounter < size)
         {
-            GameObject bodyPart = Instantiate(bodyPrefab, currentTileToSpawn.worldPosition, Quaternion.identity);
+            GameObject bodyPart = Instantiate(bodyPrefab, currentTileToSpawn.worldPosition, Quaternion.identity, transform);
+            bodyPart.name = $"Body_{bodyCounter}";
+            BodyNode bodyNode = bodyPart.GetComponent<BodyNode>();
+            
+            bodyNodes.Add(bodyNode);
+            
+            bodyNode.previous = lastBodyNode;
+            lastBodyNode = bodyNode;
+            
+            lastBodyNode.currentTile = currentTileToSpawn;
+            
             currentTileToSpawn = currentTileToSpawn.neighbourTiles[(int) Direction.Down];
             bodyCounter++;
         }
     }
-    public void MoveToTile(Tile tile)
+    
+    public void MoveToTile(BodyNode node, Tile tile)
     {
         if (tile == null) { return; }
-        _transform.position = tile.worldPosition;
+        node.transform.position = tile.worldPosition;
+        node.currentTile = tile;
         currentTile = tile;
     }
-
+    
     private void TickMovement()
     {
         currentTime -= Time.deltaTime;
         if (!(currentTime <= 0)) return;
         
-        MoveToTile(currentTile.neighbourTiles[(int)direction]);
+        MoveToTile(head.GetComponent<BodyNode>(), currentTile.neighbourTiles[(int)direction]);
+        CalculateBody();
         currentTime = tick;
     }
+    
     private void InputHandler()
     {
         // handling input
@@ -71,23 +100,23 @@ public class SnakeController : MonoBehaviour, IEntityController
             direction = Direction.Down;
         }   
     }
+    
     private void Update()
     {
         InputHandler();
         TickMovement();
     }
-    private void Awake()
-    {
-        _transform = transform;
-        direction = Direction.Up;
-    }
 
     // Do after map spawning
     private void Start()
     {
+        bodyNodes = new List<BodyNode>();
         map = FindObjectOfType<Map>();
         currentTile = map.tileGrid[0, 0];
-        SpawnSnake();
         head = transform.GetChild(0).gameObject;
+        _transform = head.transform;
+        direction = Direction.Up;
+        
+        SpawnSnake();
     }
 }

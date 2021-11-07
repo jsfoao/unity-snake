@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IEntityController
 {
-    void MoveToTile(Tile tile);
+    void MoveToTile(BodyNode node, Tile tile);
 }
