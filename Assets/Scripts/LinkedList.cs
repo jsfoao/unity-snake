@@ -1,42 +1,24 @@
-using UnityEngine;
-
 namespace System.Collections.Generic
 {
-    public interface ILinkedList<T>
+    public class LList<T>
     {
-        int Count { get; }
-        void AddLast(T item);
-        void AddFirst(T item);
-        void Insert(T item, int index);
-        int IndexOf(T item);
-        T ItemOf(int index);
-        bool Contains(T item);
-        void Remove(T item);
-        void RemoveAt(int index);
-        public void Write();
-
-        public T this[int index] { get; set; }
-    }
-    
-    public class LList<T> : ILinkedList<T>
-    {
-        public class ListNode
+        public class Node
         {
             public T Item { get; }
-            public ListNode Next { get; set; }
-            public ListNode(T item)
+            public Node Next { get; set; }
+            public Node(T item)
             { 
                 this.Item = item;
             }
         }
-        public ListNode Head { get; private set; }
-        public ListNode Tail { get; private set; }
+        public Node Head { get; private set; }
+        public Node Tail { get; private set; }
         public int Count { get; private set; }
         
         // Operations
         public void AddLast(T item) 
         { 
-            ListNode node = new ListNode(item);
+            Node node = new Node(item);
             
             if (Head == null) 
             { 
@@ -59,7 +41,7 @@ namespace System.Collections.Generic
             
         public void AddFirst(T item)
         {
-            ListNode node = new ListNode(item);
+            Node node = new Node(item);
                 
             if (Head == null)
             { 
@@ -68,14 +50,14 @@ namespace System.Collections.Generic
             }
             if (Count == 1)
             { 
-                ListNode temp = Head; 
+                Node temp = Head; 
                 node.Next = temp; 
                 Head = node;
                 Tail = temp;
             }
             if (Count > 1)
             { 
-                ListNode temp = Head; 
+                Node temp = Head; 
                 node.Next = temp; 
                 Head = node;
             }
@@ -84,7 +66,7 @@ namespace System.Collections.Generic
 
         public void Insert(T item, int index)
         { 
-            ListNode newNode = new ListNode(item);
+            Node newNode = new Node(item);
             
             if (index == 0)
             { 
@@ -99,12 +81,12 @@ namespace System.Collections.Generic
             }
 
             int counter = 1;
-            ListNode node = Head;
+            Node node = Head;
             while (node.Next != null)
             {
                 if (counter == index) 
                 { 
-                    ListNode temp = node.Next; 
+                    Node temp = node.Next; 
                     node.Next = newNode; 
                     newNode.Next = temp; 
                     Count++;
@@ -118,7 +100,7 @@ namespace System.Collections.Generic
         public int IndexOf(T item)
         {
             int counter = 0;
-            ListNode node = Head;
+            Node node = Head;
             while (node != null)
             { 
                 if (node.Item.Equals(item)) 
@@ -134,7 +116,7 @@ namespace System.Collections.Generic
         public T ItemOf(int index)
         {
             int counter = 0;
-            ListNode node = Head; 
+            Node node = Head; 
             while (node != null)
             { 
                 if (counter == index) 
@@ -161,7 +143,7 @@ namespace System.Collections.Generic
                 return; 
             }
 
-            ListNode node = Head;
+            Node node = Head;
             while (node.Next != null)
             { 
                 if (node.Next.Item.Equals(item)) 
@@ -184,7 +166,7 @@ namespace System.Collections.Generic
             }
 
             int counter = 1;
-            ListNode node = Head;
+            Node node = Head;
             while (node.Next != null)
             { 
                 if (counter == index) 
@@ -210,25 +192,6 @@ namespace System.Collections.Generic
                 }
                 Insert(value, index);
             }
-        }
-
-        // Methods
-        public void Write()
-        {
-            Console.WriteLine("Linked List");
-            Console.WriteLine("> Head: " + Head.Item);
-            Console.WriteLine("> Tail: " + Tail.Item);
-            Console.WriteLine("> Count: " + Count);
-            Console.WriteLine("-----------");
-            int counter = 0; 
-            ListNode node = Head;
-            while (node != null)
-            {
-                Console.WriteLine(counter + ": " + node.Item);
-                counter++;
-                node = node.Next;
-            }
-            Console.WriteLine("-----------");
         }
     }
 }
