@@ -243,9 +243,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
-    - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
-      propertyPath: offset
-      value: 1.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
