@@ -1,21 +1,9 @@
 using System;
-using UnityEngine;
 
-public class Body : MonoBehaviour
+public class Body : GridObject
 {
-    [NonSerialized] public Tile currentTile;
     [NonSerialized] public Tile previousTile;
 
-    public Tile CurrentTile
-    {
-        get => currentTile;
-        set
-        {
-            currentTile = value;
-            // MoveToTile(currentTile);
-        }
-    }
-    
     public void MoveToTile(Tile tile)
     {
         if (tile == null) { return; }

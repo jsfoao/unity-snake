@@ -10,7 +10,7 @@ public class Map : MonoBehaviour
 {
     [Header("Spawning tiles")]
     [SerializeField] private GameObject tilePrefab;
-    [SerializeField] private Vector2Int size;
+    [SerializeField] public Vector2Int size;
     [SerializeField] private float offset;
     [NonSerialized] public Tile[,] tileGrid;
     
@@ -18,13 +18,14 @@ public class Map : MonoBehaviour
     private void GenerateMap()
     {
         tileGrid = new Tile[size.x, size.y];
+        Transform parent = transform.GetChild(0);
         for (int x = 0; x < size.x; x++)
         {
             for (int y = 0; y < size.y; y++)
             {
                 // Spawning tile
                 Vector2 position = new Vector2(x, y) * offset;
-                GameObject tileGameObject = Instantiate(tilePrefab, position, Quaternion.identity, transform);
+                GameObject tileGameObject = Instantiate(tilePrefab, position, Quaternion.identity, parent);
                 tileGameObject.name = $"Tile_{x}_{y}";
                 
                 // Setting grid values

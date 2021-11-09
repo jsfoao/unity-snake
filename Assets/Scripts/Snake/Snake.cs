@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
     public LList<Body> bodyParts;
-    [SerializeField] public int size;
+    [SerializeField] private int initialSize;
+    private int size;
 
     [Header("Temp")] 
     [SerializeField] private GameObject bodyPrefab;
 
-    public void AddBody(Tile tile)
+    public Body AddBody()
     {
         Body body;
 
@@ -18,30 +20,30 @@ public class Snake : MonoBehaviour
         {
             body = Instantiate(bodyPrefab, transform).GetComponent<Body>();
             body.previousTile = null;
-            body.currentTile = tile;
+            body.currentTile = null;
             bodyParts.AddLast(body);
         }
         else
         {
-            body = Instantiate(bodyPrefab, transform).GetComponent<Body>();
+            body = Instantiate(bodyPrefab, bodyParts.Tail.Item.transform.position, Quaternion.identity, transform).GetComponent<Body>();
             body.previousTile = null;
-            body.currentTile = tile;
+            body.currentTile = bodyParts.Tail.Item.currentTile;
             bodyParts.AddLast(body);
         }
+        size++;
+        return body;
     }
     
     public void Create(Tile tile)
     {
         // Spawn head on tile
-        AddBody(tile);
-
+        Body headBody = AddBody();
+        headBody.currentTile = tile;
         // Spawn rest of body on adjacent neighbour tiles
-        for (int i = 1; i < size; i++)
+        for (int i = 1; i < initialSize; i++)
         {
-            AddBody(bodyParts.Tail.Item.currentTile.neighbourTiles[(int)Direction.Down]);
+            AddBody();
         }
-        
-        Debug.Log($"Snake of size {size} spawned on {tile.name}");
     }
 
     private void Start()
