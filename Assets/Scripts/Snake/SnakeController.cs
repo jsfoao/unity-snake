@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.TerrainAPI;
 using Direction = UnityEngine.Direction;
@@ -54,26 +56,39 @@ public class SnakeController : MonoBehaviour, IEntityController
         Body headBody = snake.bodyParts.Head.Item;
         headBody.MoveToTile(headBody.currentTile.neighbourTiles[(int)direction]);
 
-        // if tile has object
-        if (headBody.currentTile.currentObject != null)
-        {
-            // Check if object is fruit
-            if (headBody.currentTile.currentObject.GetComponent<Fruit>() != null)
-            {
-                Debug.Log("Destroy fruit");
-                // destroy fruit and spawn new random one
-                spawner.DestroyObject(headBody.currentTile.currentObject);
-                spawner.SpawnRandomFruit();
-                
-                // add to snake size
-                snake.AddBody();
-            }
-        }
-
         // Evaluate remaining body positions
         EvaluateBodyPositions();
+        
+        // "Collisions"
+        // if tile has object
+        List<GameObject> objectsToCheck = headBody.currentTile.currentObjects;
+        if (objectsToCheck != null)
+        {
+            int bodyCounter = 0;
+            foreach (GameObject go in objectsToCheck)
+            {
+                if (go.GetComponent<Body>() != null)
+                {
+                    bodyCounter++;
+                }
+
+                if (bodyCounter >= 2)
+                {
+                    Time.timeScale = 0f;
+                    Debug.Log("GameOver");
+                }
+                
+                if (go.GetComponent<Fruit>() != null)
+                {
+                    spawner.DestroyObject(go);
+                    spawner.SpawnRandomFruit();
+                    snake.AddBody();
+                    return;
+                }
+            }
+        }
     }
-    
+
     private void InputHandler()
     {
         // handling input

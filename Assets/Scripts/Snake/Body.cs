@@ -11,5 +11,8 @@ public class Body : GridObject
         Tile temp = currentTile;
         previousTile = temp;
         currentTile = tile;
+        
+        previousTile.currentObjects.Remove(gameObject);
+        currentTile.currentObjects.Add(gameObject);
     }
 }
