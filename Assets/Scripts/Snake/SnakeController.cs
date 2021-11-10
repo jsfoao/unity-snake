@@ -23,6 +23,8 @@ public class SnakeController : MonoBehaviour, IEntityController
     private Snake snake;
     private Map map;
     private Spawner spawner;
+
+    private Body headBody;
     
     // todo lock movement against snake
     
@@ -39,26 +41,17 @@ public class SnakeController : MonoBehaviour, IEntityController
         }
     }
 
-    // Runs every tick seconds
-    private void TickUpdate()
-    {
-        currentTime -= Time.deltaTime;
-        if (!(currentTime <= 0)) return;
-        
-        HandleMovement();
-        
-        currentTime = tick;
-    }
-
     private void HandleMovement()
     {
         // Move head of snake to tile set by input
-        Body headBody = snake.bodyParts.Head.Item;
         headBody.MoveToTile(headBody.currentTile.neighbourTiles[(int)direction]);
 
         // Evaluate remaining body positions
         EvaluateBodyPositions();
-        
+    }
+
+    private void HandleCollisions()
+    {
         // "Collisions"
         // if tile has object
         List<GameObject> objectsToCheck = headBody.currentTile.currentObjects;
@@ -88,7 +81,6 @@ public class SnakeController : MonoBehaviour, IEntityController
             }
         }
     }
-
     private void InputHandler()
     {
         // handling input
@@ -112,11 +104,24 @@ public class SnakeController : MonoBehaviour, IEntityController
             if (direction == Direction.Up) { return; }
             direction = Direction.Down;
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            snake.AddBody();
-        }
+    }
+    
+    // Runs every tick seconds
+    private void TickUpdate()
+    {
+        currentTime -= Time.deltaTime;
+        if (!(currentTime <= 0)) return;
+        
+        // Check for new headBody every tick
+        headBody = snake.bodyParts.Head.Item;
+        
+        // Snake movement
+        HandleMovement();
+        
+        // Snake collisions
+        HandleCollisions();
+        
+        currentTime = tick;
     }
     
     private void Update()
@@ -133,7 +138,7 @@ public class SnakeController : MonoBehaviour, IEntityController
         spawner = FindObjectOfType<Spawner>();
         direction = Direction.Up;
         
-        // Spawn snake on (0, 0)
+        // Spawn snake on desired tile
         snake.Create(map.tileGrid[5, 5]);
     }
 }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1813152694199487170
+--- !u!1 &3722162366362494790
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7238616367967052404}
-  - component: {fileID: 7033347185196167208}
-  - component: {fileID: 1010800515351295139}
+  - component: {fileID: 3722162366362494788}
+  - component: {fileID: 3722162366362494791}
   m_Layer: 0
-  m_Name: Snake
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7238616367967052404
+--- !u!4 &3722162366362494788
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813152694199487170}
+  m_GameObject: {fileID: 3722162366362494790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,30 +31,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7033347185196167208
+--- !u!114 &3722162366362494791
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813152694199487170}
+  m_GameObject: {fileID: 3722162366362494790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0ef90ab1c339e942bdf24c52697b6fc, type: 3}
+  m_Script: {fileID: 11500000, guid: 862b27af23fdd3941b3d852e9a91564b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tick: 0.1
---- !u!114 &1010800515351295139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813152694199487170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60097a6fbebd7894abf758086bd2a17a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialSize: 3
-  bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
