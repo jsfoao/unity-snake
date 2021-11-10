@@ -5,27 +5,36 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    // List of linked bodies
     public LList<Body> bodyParts;
-    [SerializeField] private int initialSize;
+    
+    // Size of snake when spawned
+    [SerializeField] [Tooltip("Size of snake when spawned")] 
+    private int initialSize;
+    
+    // Current size of snake
     private int size;
 
+    // Reference to prefab
     [Header("Temp")] 
     [SerializeField] private GameObject bodyPrefab;
-
+    
     public Body AddBody()
     {
         Body body;
-
+        GameObject spawnedGameObject;
         if (bodyParts.Count == 0)
         {
-            body = Instantiate(bodyPrefab, transform).GetComponent<Body>();
+            spawnedGameObject = Instantiate(bodyPrefab, transform);
+            body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
             body.currentTile = null;
             bodyParts.AddLast(body);
         }
         else
         {
-            body = Instantiate(bodyPrefab, bodyParts.Tail.Item.transform.position, Quaternion.identity, transform).GetComponent<Body>();
+            spawnedGameObject = Instantiate(bodyPrefab, bodyParts.Tail.Item.transform.position, Quaternion.identity, transform);
+            body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
             body.currentTile = bodyParts.Tail.Item.currentTile;
             bodyParts.AddLast(body);
@@ -46,7 +55,7 @@ public class Snake : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         bodyParts = new LList<Body>();
     }

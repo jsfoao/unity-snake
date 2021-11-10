@@ -1,9 +1,11 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     private static GameObject instance;
     public HighScore highScore;
+    
     private void Awake()
     {
         // Singleton

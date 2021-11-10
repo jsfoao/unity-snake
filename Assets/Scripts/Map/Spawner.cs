@@ -1,21 +1,30 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
+    [SerializeField] private GameObject snakePrefab;
     [SerializeField] private GameObject gridObjectPrefabs;
     [SerializeField] private List<GameObject> spawnedObjects;
-    
+
     private Map map;
     private Transform parent;
 
+    private void SpawnSnake(Tile tile)
+    {
+        parent = transform.GetChild(2);
+        GameObject instance = Instantiate(snakePrefab, Vector3.zero, Quaternion.identity, parent);
+        instance.GetComponent<Snake>().Create(tile);
+    }
+    
     public void SpawnRandomFruit()
     {
         Vector2Int randomPosition = new Vector2Int(Random.Range(0, map.size.x), Random.Range(0, map.size.y));
         SpawnObject(gridObjectPrefabs, map.tileGrid[randomPosition.x, randomPosition.y]);
     }
-    public GameObject SpawnObject(GameObject gridObjectPrefab, Tile tile)
+    private GameObject SpawnObject(GameObject gridObjectPrefab, Tile tile)
     {
         GameObject instance = Instantiate(gridObjectPrefab, tile.worldPosition, Quaternion.identity, parent);
         GridObject gridObject = instance.GetComponent<GridObject>();
@@ -33,11 +42,19 @@ public class Spawner : MonoBehaviour
         Destroy(gameObject);
     }
     
-    public void Start()
+    private void Awake()
     {
         map = GetComponent<Map>();
         parent = transform.GetChild(1);
+    }
 
+    private void Start()
+    {
         SpawnRandomFruit();
+        SpawnRandomFruit();
+        SpawnRandomFruit();
+        
+        SpawnSnake(map.tileGrid[0, 0]);
+        SpawnSnake(map.tileGrid[10, 0]);
     }
 }

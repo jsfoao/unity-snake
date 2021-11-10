@@ -11,7 +11,9 @@ using Direction = UnityEngine.Direction;
 [RequireComponent(typeof(Snake))]
 public class SnakeController : MonoBehaviour, IEntityController
 {
-    private Direction direction;
+    private Direction _currentDirection;
+    private Direction _desiredDirection;
+    private Direction _oppositeDirection;
     private Transform _transform;
     private Vector2 worldPosition;
 
@@ -26,10 +28,8 @@ public class SnakeController : MonoBehaviour, IEntityController
 
     private Body headBody;
     
-    // todo lock movement against snake
-    
     // Set linked body positions
-    private void EvaluateBodyPositions()
+    public void EvaluateBodyPositions()
     {
         // Start traversing from head
         var bodyNode = snake.bodyParts.Head;
@@ -41,15 +41,45 @@ public class SnakeController : MonoBehaviour, IEntityController
         }
     }
 
-    private void HandleMovement()
+    // Locks snake from moving on opposite direction of its current movement
+    private bool IsValidMovement()
     {
+        if (_desiredDirection == Direction.Left && _currentDirection == Direction.Right)
+        {
+            return false;
+        }
+        if (_desiredDirection == Direction.Right && _currentDirection == Direction.Left)
+        {
+            return false;
+        }
+        if (_desiredDirection == Direction.Down && _currentDirection == Direction.Up)
+        {
+            return false;
+        }
+        if (_desiredDirection == Direction.Up && _currentDirection == Direction.Down)
+        {
+            return false;
+        }
+        return true;
+    }
+    
+    // Handle head of snake movement
+    public void HandleMovement()
+    {
+        // Check if last input is a valid move
+        if (IsValidMovement())
+        {
+            _currentDirection = _desiredDirection;
+        }
+        
         // Move head of snake to tile set by input
-        headBody.MoveToTile(headBody.currentTile.neighbourTiles[(int)direction]);
+        headBody.MoveToTile(headBody.currentTile.neighbourTiles[(int)_currentDirection]);
 
         // Evaluate remaining body positions
         EvaluateBodyPositions();
     }
 
+    // Handle head collisions
     private void HandleCollisions()
     {
         // "Collisions"
@@ -81,28 +111,26 @@ public class SnakeController : MonoBehaviour, IEntityController
             }
         }
     }
-    private void InputHandler()
+    
+    // Check for input
+    private void HandleInput()
     {
         // handling input
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (direction == Direction.Right) { return; }
-            direction = Direction.Left;
+            _desiredDirection = Direction.Left;
         }
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (direction == Direction.Left) { return; }
-            direction = Direction.Right;
+            _desiredDirection = Direction.Right;
         }
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (direction == Direction.Down) { return; }
-            direction = Direction.Up;
+            _desiredDirection = Direction.Up;
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (direction == Direction.Up) { return; }
-            direction = Direction.Down;
+            _desiredDirection = Direction.Down;
         }
     }
     
@@ -113,7 +141,10 @@ public class SnakeController : MonoBehaviour, IEntityController
         if (!(currentTime <= 0)) return;
         
         // Check for new headBody every tick
-        headBody = snake.bodyParts.Head.Item;
+        if (snake.bodyParts != null)
+        {
+            headBody = snake.bodyParts.Head.Item;
+        }
         
         // Snake movement
         HandleMovement();
@@ -126,7 +157,7 @@ public class SnakeController : MonoBehaviour, IEntityController
     
     private void Update()
     {
-        InputHandler();
+        HandleInput();
         TickUpdate();
     }
 
@@ -136,9 +167,7 @@ public class SnakeController : MonoBehaviour, IEntityController
         snake = GetComponent<Snake>();
         map = FindObjectOfType<Map>();
         spawner = FindObjectOfType<Spawner>();
-        direction = Direction.Up;
-        
-        // Spawn snake on desired tile
-        snake.Create(map.tileGrid[5, 5]);
+        _desiredDirection = Direction.Up;
+        _currentDirection = Direction.Up;
     }
 }
