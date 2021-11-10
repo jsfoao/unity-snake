@@ -43,13 +43,13 @@ public class Snake : MonoBehaviour
         return body;
     }
     
-    public void Create(Tile tile)
+    public void Create(Tile tile, int createSize)
     {
         // Spawn head on tile
         Body headBody = AddBody();
         headBody.currentTile = tile;
         // Spawn rest of body on adjacent neighbour tiles
-        for (int i = 1; i < initialSize; i++)
+        for (int i = 1; i < createSize; i++)
         {
             AddBody();
         }

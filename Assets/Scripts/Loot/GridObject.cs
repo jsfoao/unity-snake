@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 
 public class GridObject : MonoBehaviour
 {
-    [SerializeField] public Tile currentTile;
+    [NonSerialized] public Tile currentTile;
 }

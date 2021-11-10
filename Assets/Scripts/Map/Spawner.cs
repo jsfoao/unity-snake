@@ -5,18 +5,21 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private GameObject snakePrefab;
+    [SerializeField] private GameObject entitySnakePrefab;
+    [SerializeField] private GameObject playerSnakePrefab;
     [SerializeField] private GameObject gridObjectPrefabs;
     [SerializeField] private List<GameObject> spawnedObjects;
 
     private Map map;
     private Transform parent;
 
-    private void SpawnSnake(Tile tile)
+    private void SpawnSnake(Tile tile, int size = 3, bool isControlled = false)
     {
         parent = transform.GetChild(2);
-        GameObject instance = Instantiate(snakePrefab, Vector3.zero, Quaternion.identity, parent);
-        instance.GetComponent<Snake>().Create(tile);
+        GameObject prefabToSpawn = isControlled ? playerSnakePrefab : entitySnakePrefab;
+        GameObject instance = Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity, parent);
+        Snake newSnake = instance.GetComponent<Snake>();
+        newSnake.Create(tile, size);
     }
     
     public void SpawnRandomFruit()
@@ -54,7 +57,8 @@ public class Spawner : MonoBehaviour
         SpawnRandomFruit();
         SpawnRandomFruit();
         
-        SpawnSnake(map.tileGrid[0, 0]);
-        SpawnSnake(map.tileGrid[10, 0]);
+        SpawnSnake(map.tileGrid[0, 0], 3, true);
+        SpawnSnake(map.tileGrid[10, 0], 8);
+        SpawnSnake(map.tileGrid[20, 0], 15);
     }
 }

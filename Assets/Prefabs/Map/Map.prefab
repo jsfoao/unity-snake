@@ -92,7 +92,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e85cde43abe91147b6109e745d12ee4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakePrefab: {fileID: 1813152694199487170, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
+  entitySnakePrefab: {fileID: 1813152694199487170, guid: 957e8508b198a9548a204b168e7131ef, type: 3}
+  playerSnakePrefab: {fileID: 1813152694199487170, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
   gridObjectPrefabs: {fileID: 1813152694199487170, guid: 8e25729a79a9f114b935112f016c7763, type: 3}
   spawnedObjects: []
 --- !u!1 &6505586868192577509

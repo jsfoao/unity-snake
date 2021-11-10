@@ -1,15 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.TerrainAPI;
-using Direction = UnityEngine.Direction;
 
-// snake will depend on map
-// snake will move dependent on tile grid
-// snake wont have independent movement
-// head of snake will control movement
 [RequireComponent(typeof(Snake))]
-public class SnakeController : MonoBehaviour, IEntityController
+public class EntityController : MonoBehaviour, IEntityController
 {
     private Direction _currentDirection;
     private Direction _desiredDirection;
@@ -23,10 +17,10 @@ public class SnakeController : MonoBehaviour, IEntityController
     private float tick;
     
     private Snake snake;
-    private Map map;
     private Spawner spawner;
 
     private Body headBody;
+    [NonSerialized] public bool enableInput;
     
     // Set linked body positions
     public void EvaluateBodyPositions()
@@ -41,26 +35,10 @@ public class SnakeController : MonoBehaviour, IEntityController
         }
     }
 
-    // Locks snake from moving on opposite direction of its current movement
+    // Locks snake from moving to previous tile
     private bool IsValidMovement()
     {
-        if (_desiredDirection == Direction.Left && _currentDirection == Direction.Right)
-        {
-            return false;
-        }
-        if (_desiredDirection == Direction.Right && _currentDirection == Direction.Left)
-        {
-            return false;
-        }
-        if (_desiredDirection == Direction.Down && _currentDirection == Direction.Up)
-        {
-            return false;
-        }
-        if (_desiredDirection == Direction.Up && _currentDirection == Direction.Down)
-        {
-            return false;
-        }
-        return true;
+        return headBody.currentTile.neighbourTiles[(int)_desiredDirection] != headBody.previousTile;
     }
     
     // Handle head of snake movement
@@ -80,7 +58,7 @@ public class SnakeController : MonoBehaviour, IEntityController
     }
 
     // Handle head collisions
-    private void HandleCollisions()
+    public void HandleCollisions()
     {
         // "Collisions"
         // if tile has object
@@ -90,17 +68,28 @@ public class SnakeController : MonoBehaviour, IEntityController
             int bodyCounter = 0;
             foreach (GameObject go in objectsToCheck)
             {
-                if (go.GetComponent<Body>() != null)
+                // Collision with self
+                Body bodyToCheck = go.GetComponent<Body>();
+                if (bodyToCheck != null)
                 {
-                    bodyCounter++;
+                    if (snake.bodyParts.Contains(bodyToCheck))
+                    {
+                        bodyCounter++;
+                    }
+                    else
+                    {
+                        Debug.Log("Collision with different snake");
+                    }
                 }
 
+                // if there's 2 bodies of same snake then collision with self exists
                 if (bodyCounter >= 2)
                 {
                     Time.timeScale = 0f;
-                    Debug.Log("GameOver");
+                    Debug.Log("Game Over!");
                 }
                 
+                // Collision with fruit
                 if (go.GetComponent<Fruit>() != null)
                 {
                     spawner.DestroyObject(go);
@@ -111,31 +100,24 @@ public class SnakeController : MonoBehaviour, IEntityController
             }
         }
     }
-    
-    // Check for input
-    private void HandleInput()
+
+    public void ChangeDirection(Direction direction)
     {
-        // handling input
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        _desiredDirection = direction;
+        
+        // Check if last input is a valid move
+        if (IsValidMovement())
         {
-            _desiredDirection = Direction.Left;
+            _currentDirection = _desiredDirection;
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            _desiredDirection = Direction.Right;
-        }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            _desiredDirection = Direction.Up;
-        }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            _desiredDirection = Direction.Down;
-        }
+    }
+
+    public virtual void HandleInput()
+    {
     }
     
     // Runs every tick seconds
-    private void TickUpdate()
+    public void TickUpdate()
     {
         currentTime -= Time.deltaTime;
         if (!(currentTime <= 0)) return;
@@ -155,19 +137,19 @@ public class SnakeController : MonoBehaviour, IEntityController
         currentTime = tick;
     }
     
-    private void Update()
+    public void Update()
     {
-        HandleInput();
         TickUpdate();
+        HandleInput();
     }
 
     // Do after map spawning
     private void Start()
     {
         snake = GetComponent<Snake>();
-        map = FindObjectOfType<Map>();
         spawner = FindObjectOfType<Spawner>();
         _desiredDirection = Direction.Up;
         _currentDirection = Direction.Up;
+        enableInput = true;
     }
 }
