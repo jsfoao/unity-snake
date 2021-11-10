@@ -11,5 +11,16 @@ public class Tile : MonoBehaviour
     [NonSerialized] public Tile[] neighbourTiles = new Tile[4];
     
     // Objects
-    [SerializeField] public List<GameObject> currentObjects;
+    [NonSerialized] public List<GameObject> currentObjects;
+    
+    // Pathfinding
+    [NonSerialized] public Tile parentTile;
+    [NonSerialized] public int gCost;
+    [NonSerialized] public int hCost;
+    public int fCost => gCost + hCost;
+
+    private void Awake()
+    {
+        currentObjects = new List<GameObject>();
+    }
 }

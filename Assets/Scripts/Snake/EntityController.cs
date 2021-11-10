@@ -63,40 +63,37 @@ public class EntityController : MonoBehaviour, IEntityController
         // "Collisions"
         // if tile has object
         List<GameObject> objectsToCheck = headBody.currentTile.currentObjects;
-        if (objectsToCheck != null)
+        int bodyCounter = 0;
+        foreach (GameObject go in objectsToCheck)
         {
-            int bodyCounter = 0;
-            foreach (GameObject go in objectsToCheck)
-            {
-                // Collision with self
-                Body bodyToCheck = go.GetComponent<Body>();
-                if (bodyToCheck != null)
-                {
-                    if (snake.bodyParts.Contains(bodyToCheck))
-                    {
-                        bodyCounter++;
-                    }
-                    else
-                    {
-                        Debug.Log("Collision with different snake");
-                    }
+            // Collision with self
+            Body bodyToCheck = go.GetComponent<Body>();
+            if (bodyToCheck != null) 
+            { 
+                if (snake.bodyParts.Contains(bodyToCheck)) 
+                { 
+                    bodyCounter++;
                 }
-
-                // if there's 2 bodies of same snake then collision with self exists
-                if (bodyCounter >= 2)
-                {
-                    Time.timeScale = 0f;
-                    Debug.Log("Game Over!");
+                else 
+                { 
+                    Debug.Log("Collision with different snake");
                 }
+            }
+            // if there's 2 bodies of same snake then collision with self exists
+            if (bodyCounter >= 2)
+            { 
+                Time.timeScale = 0f; 
+                Debug.Log("Game Over!");
+            }
+            
+            // Collision with fruit
+            if (go.GetComponent<Fruit>() != null)
+            { 
+                spawner.DestroyObject(go);
+                spawner.SpawnRandomFruit();
+                snake.AddBody();
+                return;
                 
-                // Collision with fruit
-                if (go.GetComponent<Fruit>() != null)
-                {
-                    spawner.DestroyObject(go);
-                    spawner.SpawnRandomFruit();
-                    snake.AddBody();
-                    return;
-                }
             }
         }
     }
