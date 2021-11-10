@@ -12,6 +12,8 @@ public class Pathfinding : MonoBehaviour
     private Map _map;
     [SerializeField] private List<Tile> pathList;
 
+    private bool enableGizmos;
+
     public List<Tile> FindPath(Tile startTile, Tile targetTile)
     {
         if (startTile == targetTile)
@@ -103,6 +105,7 @@ public class Pathfinding : MonoBehaviour
     private void Awake()
     {
         _map = GetComponent<Map>();
+        enableGizmos = true;
     }
 
     private void Update()
@@ -118,10 +121,13 @@ public class Pathfinding : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (!enableGizmos) { return; }
+        if (pathList == null) { return; }
+        
         Gizmos.color = Color.blue;
         foreach (var tile in pathList)
         {
-            Gizmos.DrawCube(tile.worldPosition, new Vector3(.5f, .5f, .5f));
+            Gizmos.DrawCube(tile.worldPosition, new Vector3(.2f, .2f, .2f));
         }
     }
 }

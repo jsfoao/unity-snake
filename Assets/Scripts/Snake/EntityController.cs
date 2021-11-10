@@ -12,14 +12,14 @@ public class EntityController : MonoBehaviour, IEntityController
     private Vector2 worldPosition;
 
     // Tick
-    private float currentTime;
+    [NonSerialized] public float currentTime;
     [SerializeField] [Tooltip("Time in seconds to move to next tile")] 
-    private float tick;
+    public float tick;
     
-    private Snake snake;
+    [NonSerialized] public Snake snake;
     private Spawner spawner;
 
-    private Body headBody;
+    [NonSerialized] public Body headBody;
     [NonSerialized] public bool enableInput;
     
     // Set linked body positions
@@ -109,12 +109,8 @@ public class EntityController : MonoBehaviour, IEntityController
         }
     }
 
-    public virtual void HandleInput()
-    {
-    }
-    
     // Runs every tick seconds
-    public void TickUpdate()
+    public virtual void TickUpdate()
     {
         currentTime -= Time.deltaTime;
         if (!(currentTime <= 0)) return;
@@ -134,14 +130,13 @@ public class EntityController : MonoBehaviour, IEntityController
         currentTime = tick;
     }
     
-    public void Update()
+    public virtual void Update()
     {
         TickUpdate();
-        HandleInput();
     }
 
     // Do after map spawning
-    private void Start()
+    public virtual void Start()
     {
         snake = GetComponent<Snake>();
         spawner = FindObjectOfType<Spawner>();

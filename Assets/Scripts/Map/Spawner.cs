@@ -54,6 +54,6 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         SpawnRandomFruit();
-        SpawnSnake(map.tileGrid[0, 0], 3, true);
+        SpawnSnake(map.tileGrid[0, 0], 1);
     }
 }

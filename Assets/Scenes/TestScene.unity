@@ -202,5 +202,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startTilePos: {x: 0, y: 0}
-  targetTilePos: {x: 1, y: 1}
+  targetTilePos: {x: 10, y: 10}
   pathList: []

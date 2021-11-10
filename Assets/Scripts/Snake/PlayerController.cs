@@ -4,7 +4,7 @@ using Direction = UnityEngine.Direction;
 public class PlayerController : EntityController
 {
     // Check for input
-    public override void HandleInput()
+    private void HandleInput()
     {
         if (!enableInput) { return; }
         
@@ -25,5 +25,11 @@ public class PlayerController : EntityController
         {
             ChangeDirection(Direction.Down);
         }
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        HandleInput();
     }
 }
