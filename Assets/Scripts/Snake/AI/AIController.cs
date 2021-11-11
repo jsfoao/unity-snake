@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
-using System.Xml;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 [RequireComponent(typeof(Pathfinding))]
@@ -19,13 +16,12 @@ public class AIController : EntityController
         EvaluateBodyPositions();
     }
     
-    // todo fix issue
+    // todo create separate item finder
     private Tile FindFruit()
     {
-        foreach (GridObject go in _spawner.spawnedObjects)
+        foreach (GridObject fruit in _spawner.spawnedObjects)
         {
-            Fruit fruit = go.GetComponent<Fruit>();
-            if (go.objectType == ObjectType.Fruit)
+            if (fruit.type == ObjectType.Fruit)
             {
                 return fruit.currentTile;
             }
@@ -36,21 +32,26 @@ public class AIController : EntityController
     // Randomize until finding valid neighbour
     private Tile RandomValidNeighbour()
     {
-        for (int i = 0; i < 20; i++)
+        List<Tile> possibleTiles = new List<Tile>();
+        foreach (Tile tile in headBody.currentTile.neighbourTiles)
         {
-            int randomDirection = Random.Range(0, 4);
-            Tile newTile = headBody.currentTile.neighbourTiles[randomDirection];
-            if (newTile.walkable) { return newTile; }
+            if (tile.walkable)
+            {
+                possibleTiles.Add(tile);
+            }
         }
-        return null;
+
+        // No possible valid tiles found
+        if (possibleTiles.Count == 0) { return null; }
+        
+        // Return random possible tile
+        int randomIndex = Random.Range(0, possibleTiles.Count);
+        return possibleTiles[randomIndex];
     }
     
     
-    public override void TickUpdate()
+    public override void MovementTick()
     {
-        currentTime -= Time.deltaTime;
-        if (!(currentTime <= 0)) return;
-        
         // Check for new headBody every tick
         if (snake.bodyParts != null)
         {
@@ -73,19 +74,10 @@ public class AIController : EntityController
             // no possible way out
             if (randomNeighbour == null)
             {
-                // game over
-                Debug.Log($"{snake.name} collided with self and died");
-                snake.DestroySelf();
-                if (_spawner.spawnedSnakes.Count == 1)
-                {
-                    Time.timeScale = 0f;
-                    Debug.Log($"{_spawner.spawnedSnakes[0]} is winner winner chicken dinner!");
-                }
+                MoveHeadToTile(headBody.currentTile.neighbourTiles[(int)Direction.Up]);
             }
             MoveHeadToTile(RandomValidNeighbour());
         }
-        HandleCollisions();
-        currentTime = tick;
     }
 
     public override void Start()

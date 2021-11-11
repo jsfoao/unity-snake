@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Snake : MonoBehaviour
 {
@@ -13,6 +15,8 @@ public class Snake : MonoBehaviour
     [Header("Properties")]
     [SerializeField] [Tooltip("Size of snake when spawned")] 
     private int initialSize;
+
+    [NonSerialized] public UnityEvent tickEvent;
     
     // Current size of snake
     private int size;
@@ -21,6 +25,10 @@ public class Snake : MonoBehaviour
     [Header("Temp")] 
     [SerializeField] private GameObject bodyPrefab;
     private Spawner _spawner;
+    
+    // Tick
+    private float currentTime;
+    [SerializeField] private float tick;
     
     public Body AddBody()
     {
@@ -75,9 +83,23 @@ public class Snake : MonoBehaviour
         _spawner.spawnedSnakes.Remove(this);
     }
 
+    private void Update()
+    {
+        currentTime -= Time.deltaTime;
+        if (!(currentTime <= 0)) return;
+        tickEvent.Invoke();
+        currentTime = tick;
+    }
+
     private void Awake()
     {
         bodyParts = new LList<Body>();
         _spawner = FindObjectOfType<Spawner>();
+        
+        
+        // Tick event listeners
+        tickEvent = new UnityEvent();
+        tickEvent.AddListener(GetComponent<SnakeCollisions>().CollisionTick);
+        tickEvent.AddListener(GetComponent<EntityController>().MovementTick);
     }
 }

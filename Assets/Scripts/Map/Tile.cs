@@ -10,7 +10,7 @@ public class Tile : MonoBehaviour
     [NonSerialized] public Tile[] neighbourTiles = new Tile[4];
     
     // Objects
-    [NonSerialized] public List<GameObject> currentObjects;
+    [SerializeField] public List<GridObject> currentObjects;
     
     // Pathfinding
     [NonSerialized] public Tile parentTile;
@@ -23,7 +23,7 @@ public class Tile : MonoBehaviour
 
     private void Awake()
     {
-        currentObjects = new List<GameObject>();
+        currentObjects = new List<GridObject>();
         walkable = true;
     }
 }

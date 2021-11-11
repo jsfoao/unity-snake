@@ -27,9 +27,8 @@ public class PlayerController : EntityController
         }
     }
 
-    public override void Update()
+    public void Update()
     {
-        base.Update();
         HandleInput();
     }
 }

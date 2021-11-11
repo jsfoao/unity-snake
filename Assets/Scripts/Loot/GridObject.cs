@@ -4,5 +4,5 @@ using UnityEngine;
 public class GridObject : MonoBehaviour
 {
     [NonSerialized] public Tile currentTile;
-    [SerializeField] public ObjectType objectType;
+    [SerializeField] public ObjectType type;
 }

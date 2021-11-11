@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Doesn't depend on map
 public class Pathfinding : MonoBehaviour
 {
     [NonSerialized] private Vector2Int startTilePos;
@@ -9,8 +10,7 @@ public class Pathfinding : MonoBehaviour
     
     private const int STRAIGHT_COST = 10;
 
-    private Map _map;
-    [SerializeField] private List<Tile> pathList;
+    private List<Tile> pathList;
     
     public List<Tile> FindPath(Tile startTile, Tile targetTile)
     {
@@ -98,11 +98,6 @@ public class Pathfinding : MonoBehaviour
 
         cost = distToTriangle * STRAIGHT_COST;
         return cost;
-    }
-
-    private void Awake()
-    {
-        _map = FindObjectOfType<Map>();
     }
 
     private void OnDrawGizmos()

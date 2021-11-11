@@ -20,12 +20,12 @@ public class Body : GridObject
     {
         previousTile.walkable = true;
         currentTile.walkable = false;
-        previousTile.currentObjects.Remove(gameObject);
-        currentTile.currentObjects.Add(gameObject);
+        previousTile.currentObjects.Remove(this);
+        currentTile.currentObjects.Add(this);
     }
 
     private void Awake()
     {
-        objectType = ObjectType.Body;
+        type = ObjectType.Body;
     }
 }

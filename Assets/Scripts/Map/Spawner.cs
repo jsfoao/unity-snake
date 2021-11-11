@@ -64,17 +64,16 @@ public class Spawner : MonoBehaviour
         GameObject instance = Instantiate(gridObjectPrefab, tile.worldPosition, Quaternion.identity, spawnedObjectsEmpty);
         GridObject gridObject = instance.GetComponent<GridObject>();
         gridObject.currentTile = tile;
-        tile.currentObjects.Add(instance);
+        tile.currentObjects.Add(gridObject);
         spawnedObjects.Add(gridObject);
         return instance;
     }
     
-    public void DestroyObject(GameObject gameObject)
+    public void DestroyObject(GridObject gridObject)
     {
-        GridObject gridObject = gameObject.GetComponent<GridObject>();
-        gridObject.currentTile.currentObjects.Remove(gameObject);
+        gridObject.currentTile.currentObjects.Remove(gridObject);
         spawnedObjects.Remove(gridObject);
-        Destroy(gameObject);
+        Destroy(gridObject.gameObject);
     }
     
     private void Awake()
@@ -87,11 +86,9 @@ public class Spawner : MonoBehaviour
     {
         SpawnRandomFruit();
         SpawnSnake(map.tileGrid[0, 0], 1);
-        SpawnSnake(map.tileGrid[0, 1], 1);
         SpawnSnake(map.tileGrid[0, 2], 1);
-        SpawnSnake(map.tileGrid[0, 3], 1);
         SpawnSnake(map.tileGrid[0, 4], 1);
-        SpawnSnake(map.tileGrid[0, 5], 1);
         SpawnSnake(map.tileGrid[0, 6], 1);
+        SpawnSnake(map.tileGrid[0, 8], 1);
     }
 }

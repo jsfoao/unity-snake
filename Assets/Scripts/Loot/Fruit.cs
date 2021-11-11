@@ -5,6 +5,6 @@ public class Fruit : GridObject
 {
     private void Awake()
     {
-        objectType = ObjectType.Fruit;
+        type = ObjectType.Fruit;
     }
 }
