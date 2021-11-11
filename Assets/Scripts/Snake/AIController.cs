@@ -48,19 +48,39 @@ public class AIController : EntityController
         }
 
         Tile targetTile = FindFruit();
-        if (targetTile != null)
-        {
-            Debug.Log(targetTile);
-        }
-        
 
         currentTilePath = pathfinding.FindPath(headBody.currentTile, targetTile);
         
         // 0 because it currently calculates new path after every move
-        MoveHeadToTile(currentTilePath[0]);
+        if (currentTilePath != null)
+        {
+            MoveHeadToTile(currentTilePath[0]);
+        }
+        else
+        {
+            Tile randomNeighbour = RandomValidNeighbour();
+            if (randomNeighbour == null)
+            {
+
+                Time.timeScale = 0f;
+                Debug.Log("Game over from no valid positions");
+            }
+            MoveHeadToTile(RandomValidNeighbour());
+        }
         HandleCollisions();
 
         currentTime = tick;
+    }
+
+    private Tile RandomValidNeighbour()
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            int randomDirection = Random.Range(0, 4);
+            Tile newTile = headBody.currentTile.neighbourTiles[randomDirection];
+            if (newTile.walkable) { return newTile; }
+        }
+        return null;
     }
     
     public override void Start()

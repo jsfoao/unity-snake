@@ -24,9 +24,28 @@ public class Spawner : MonoBehaviour
     
     public void SpawnRandomFruit()
     {
-        Vector2Int randomPosition = new Vector2Int(Random.Range(0, map.size.x), Random.Range(0, map.size.y));
-        SpawnObject(gridObjectPrefabs, map.tileGrid[randomPosition.x, randomPosition.y]);
+        Tile randomValidTile = RandomValidTile();
+        if (randomValidTile != null)
+        {
+            SpawnObject(gridObjectPrefabs, randomValidTile);
+        }
+        else
+        {
+            Debug.Log("Game over: No more space for fruits");
+        }
     }
+
+    private Tile RandomValidTile()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Vector2Int randomPosition = new Vector2Int(Random.Range(0, map.size.x), Random.Range(0, map.size.y));
+            Tile tileToSpawnOn = map.tileGrid[randomPosition.x, randomPosition.y];
+            if (tileToSpawnOn.walkable) { return tileToSpawnOn; }
+        }
+        return null;
+    }
+    
     private GameObject SpawnObject(GameObject gridObjectPrefab, Tile tile)
     {
         GameObject instance = Instantiate(gridObjectPrefab, tile.worldPosition, Quaternion.identity, parent);

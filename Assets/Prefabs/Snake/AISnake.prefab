@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc85cb1759018345aaffa61c393e6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tick: 0.2
+  tick: 0.005
   currentTilePath: []
 --- !u!114 &1010800515351295139
 MonoBehaviour:
