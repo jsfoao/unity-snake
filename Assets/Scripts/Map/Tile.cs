@@ -16,10 +16,13 @@ public class Tile : MonoBehaviour
     [NonSerialized] public Tile parentTile;
     [NonSerialized] public int gCost;
     [NonSerialized] public int hCost;
+    [NonSerialized] public bool walkable;
+    
     public int fCost => gCost + hCost;
 
     private void Awake()
     {
         currentObjects = new List<GameObject>();
+        walkable = true;
     }
 }

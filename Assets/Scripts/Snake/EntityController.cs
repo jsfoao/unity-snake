@@ -49,9 +49,10 @@ public class EntityController : MonoBehaviour, IEntityController
         {
             _currentDirection = _desiredDirection;
         }
-        
+
         // Move head of snake to tile set by input
-        headBody.MoveToTile(headBody.currentTile.neighbourTiles[(int)_currentDirection]);
+        Tile newTile = headBody.currentTile.neighbourTiles[(int) _currentDirection];
+        headBody.MoveToTile(newTile);
 
         // Evaluate remaining body positions
         EvaluateBodyPositions();

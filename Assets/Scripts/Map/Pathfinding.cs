@@ -11,9 +11,7 @@ public class Pathfinding : MonoBehaviour
 
     private Map _map;
     [SerializeField] private List<Tile> pathList;
-
-    private bool enableGizmos;
-
+    
     public List<Tile> FindPath(Tile startTile, Tile targetTile)
     {
         if (startTile == targetTile)
@@ -49,7 +47,7 @@ public class Pathfinding : MonoBehaviour
             // Evaluate all neighbour tiles
             foreach (Tile neighbourTile in currentTile.neighbourTiles)
             {
-                if (closedList.Contains(neighbourTile))
+                if (closedList.Contains(neighbourTile) || !neighbourTile.walkable)
                     continue;
 
                 int movementCost = currentTile.gCost + TileDistanceCost(currentTile, neighbourTile);
@@ -104,24 +102,23 @@ public class Pathfinding : MonoBehaviour
     
     private void Awake()
     {
-        _map = GetComponent<Map>();
-        enableGizmos = true;
+        _map = FindObjectOfType<Map>();
     }
 
     private void Update()
     {
-        startTilePos.x = Mathf.Clamp(startTilePos.x, 0, _map.size.x - 1);
-        startTilePos.y = Mathf.Clamp(startTilePos.y, 0, _map.size.y - 1);
-        targetTilePos.x = Mathf.Clamp(targetTilePos.x, 0, _map.size.x - 1);
-        targetTilePos.y = Mathf.Clamp(targetTilePos.y, 0, _map.size.y - 1);
-        Tile tile1 = _map.tileGrid[startTilePos.x, startTilePos.y];
-        Tile tile2 = _map.tileGrid[targetTilePos.x, targetTilePos.y];
-        pathList = FindPath(tile1, tile2);
+        // Testing
+        // startTilePos.x = Mathf.Clamp(startTilePos.x, 0, _map.size.x - 1);
+        // startTilePos.y = Mathf.Clamp(startTilePos.y, 0, _map.size.y - 1);
+        // targetTilePos.x = Mathf.Clamp(targetTilePos.x, 0, _map.size.x - 1);
+        // targetTilePos.y = Mathf.Clamp(targetTilePos.y, 0, _map.size.y - 1);
+        // Tile tile1 = _map.tileGrid[startTilePos.x, startTilePos.y];
+        // Tile tile2 = _map.tileGrid[targetTilePos.x, targetTilePos.y];
+        // pathList = FindPath(tile1, tile2);
     }
 
     private void OnDrawGizmos()
     {
-        if (!enableGizmos) { return; }
         if (pathList == null) { return; }
         
         Gizmos.color = Color.blue;

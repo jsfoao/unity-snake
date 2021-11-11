@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
+[RequireComponent(typeof(Pathfinding))]
 public class AIController : EntityController
 {
     private enum State { Wander, Focus }
@@ -54,24 +56,17 @@ public class AIController : EntityController
 
         currentTilePath = pathfinding.FindPath(headBody.currentTile, targetTile);
         
+        // 0 because it currently calculates new path after every move
         MoveHeadToTile(currentTilePath[0]);
         HandleCollisions();
-        
-        // foreach (Tile tile in currentTilePath)
-        // {
-        //     MoveHeadToTile(tile);
-        // }
-        
-        // Snake collisions
-        // HandleCollisions();
-        
+
         currentTime = tick;
     }
     
     public override void Start()
     {
         base.Start();
-        pathfinding = FindObjectOfType<Pathfinding>();
+        pathfinding = GetComponent<Pathfinding>();
         map = FindObjectOfType<Map>();
         _state = State.Focus;
     }

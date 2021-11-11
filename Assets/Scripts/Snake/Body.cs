@@ -11,7 +11,9 @@ public class Body : GridObject
         Tile temp = currentTile;
         previousTile = temp;
         currentTile = tile;
-        
+
+        previousTile.walkable = true;
+        currentTile.walkable = false;
         previousTile.currentObjects.Remove(gameObject);
         currentTile.currentObjects.Add(gameObject);
     }
