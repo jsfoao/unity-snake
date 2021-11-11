@@ -16,7 +16,6 @@ public class SnakeCollisions : MonoBehaviour
             // Collision with body
             if (gridObject.type == ObjectType.Body && gridObject != headBody)
             {
-                Debug.Log($"Snake on snake collision");
                 _snake.DestroySelf();
                 
                 // Check if winner
@@ -31,7 +30,6 @@ public class SnakeCollisions : MonoBehaviour
             // Collision with fruit
             if (gridObject.type == ObjectType.Fruit)
             {
-                Debug.Log($"{_snake.name} collision with {gridObject.name}");
                 _spawner.DestroyObject(gridObject);
                 _spawner.SpawnRandomFruit();
                 _snake.AddBody();
