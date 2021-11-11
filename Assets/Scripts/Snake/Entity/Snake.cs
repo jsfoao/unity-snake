@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
@@ -9,6 +7,10 @@ public class Snake : MonoBehaviour
     public LList<Body> bodyParts;
     
     // Size of snake when spawned
+    [Header("Visuals")]
+    [SerializeField] private Color _headColor;
+    
+    [Header("Properties")]
     [SerializeField] [Tooltip("Size of snake when spawned")] 
     private int initialSize;
     
@@ -18,6 +20,7 @@ public class Snake : MonoBehaviour
     // Reference to prefab
     [Header("Temp")] 
     [SerializeField] private GameObject bodyPrefab;
+    private Spawner _spawner;
     
     public Body AddBody()
     {
@@ -37,6 +40,7 @@ public class Snake : MonoBehaviour
             body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
             body.currentTile = bodyParts.Tail.Item.currentTile;
+            
             bodyParts.AddLast(body);
         }
         size++;
@@ -47,16 +51,33 @@ public class Snake : MonoBehaviour
     {
         // Spawn head on tile
         Body headBody = AddBody();
-        headBody.currentTile = tile;
+        headBody.currentTile = tile; ;
+        
         // Spawn rest of body on adjacent neighbour tiles
         for (int i = 1; i < createSize; i++)
         {
             AddBody();
         }
+        
+        // Set head's color
+        headBody.GetComponent<SpriteRenderer>().color = _headColor;
+    }
+
+    public void DestroySelf()
+    {
+        var bodyNode = bodyParts.Head;
+        while (bodyNode.Next != null)
+        {
+            bodyNode.Item.currentTile.currentObjects.Clear();
+            bodyNode = bodyNode.Next;
+        }
+        Destroy(gameObject);
+        _spawner.spawnedSnakes.Remove(this);
     }
 
     private void Awake()
     {
         bodyParts = new LList<Body>();
+        _spawner = FindObjectOfType<Spawner>();
     }
 }

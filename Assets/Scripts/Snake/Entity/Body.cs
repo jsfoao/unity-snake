@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Body : GridObject
 {
@@ -11,10 +12,20 @@ public class Body : GridObject
         Tile temp = currentTile;
         previousTile = temp;
         currentTile = tile;
-
+        
+        UpdateTileProperties();
+    }
+    
+    private void UpdateTileProperties()
+    {
         previousTile.walkable = true;
         currentTile.walkable = false;
         previousTile.currentObjects.Remove(gameObject);
         currentTile.currentObjects.Add(gameObject);
+    }
+
+    private void Awake()
+    {
+        objectType = ObjectType.Body;
     }
 }

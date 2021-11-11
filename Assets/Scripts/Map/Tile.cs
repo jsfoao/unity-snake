@@ -15,7 +15,8 @@ public class Tile : MonoBehaviour
     // Pathfinding
     [NonSerialized] public Tile parentTile;
     [NonSerialized] public int gCost;
-    [NonSerialized] public int hCost;
+    [SerializeField] public int hCost;
+    
     [NonSerialized] public bool walkable;
     
     public int fCost => gCost + hCost;

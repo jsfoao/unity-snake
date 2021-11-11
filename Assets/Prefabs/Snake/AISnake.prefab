@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1841540332692303650}
   - component: {fileID: 1010800515351295139}
   - component: {fileID: 4120203551919076717}
+  - component: {fileID: 2630181273919671341}
   m_Layer: 0
   m_Name: AISnake
   m_TagString: Untagged
@@ -45,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc85cb1759018345aaffa61c393e6bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tick: 0.005
+  tick: 0.03
   currentTilePath: []
 --- !u!114 &1010800515351295139
 MonoBehaviour:
@@ -59,6 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60097a6fbebd7894abf758086bd2a17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _headColor: {r: 0.68894196, g: 0.40939838, b: 0.754717, a: 1}
   initialSize: 3
   bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
 --- !u!114 &4120203551919076717
@@ -73,6 +75,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1140d696c0994894384db8a732e2636c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startTilePos: {x: 0, y: 0}
-  targetTilePos: {x: 0, y: 0}
   pathList: []
+--- !u!114 &2630181273919671341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1813152694199487170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8aee45de8cca4b498d633faa584501a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

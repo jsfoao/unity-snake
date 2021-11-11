@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 [RequireComponent(typeof(Pathfinding))]
 public class AIController : EntityController
 {
-    private enum State { Wander, Focus }
-    private State _state = State.Focus;
     private Map map;
+    private Spawner _spawner;
     private Pathfinding pathfinding;
-    
+
     [SerializeField] private List<Tile> currentTilePath;
 
     public void MoveHeadToTile(Tile tile)
@@ -18,24 +19,33 @@ public class AIController : EntityController
         EvaluateBodyPositions();
     }
     
+    // todo fix issue
     private Tile FindFruit()
     {
-        for (int x = 0; x < map.size.x; x++)
+        foreach (GridObject go in _spawner.spawnedObjects)
         {
-            for (int y = 0; y < map.size.y; y++)
+            Fruit fruit = go.GetComponent<Fruit>();
+            if (go.objectType == ObjectType.Fruit)
             {
-                foreach (GameObject go in map.tileGrid[x, y].currentObjects)
-                {
-                    if (go.GetComponent<Fruit>() != null)
-                    {
-                        return map.tileGrid[x, y];
-                    }
-                }
+                return fruit.currentTile;
             }
         }
         return null;
     }
 
+    // Randomize until finding valid neighbour
+    private Tile RandomValidNeighbour()
+    {
+        for (int i = 0; i < 20; i++)
+        {
+            int randomDirection = Random.Range(0, 4);
+            Tile newTile = headBody.currentTile.neighbourTiles[randomDirection];
+            if (newTile.walkable) { return newTile; }
+        }
+        return null;
+    }
+    
+    
     public override void TickUpdate()
     {
         currentTime -= Time.deltaTime;
@@ -59,36 +69,30 @@ public class AIController : EntityController
         else
         {
             Tile randomNeighbour = RandomValidNeighbour();
+            
+            // no possible way out
             if (randomNeighbour == null)
             {
-
-                Time.timeScale = 0f;
-                Debug.Log("Game over from no valid positions");
+                // game over
+                Debug.Log($"{snake.name} collided with self and died");
+                snake.DestroySelf();
+                if (_spawner.spawnedSnakes.Count == 1)
+                {
+                    Time.timeScale = 0f;
+                    Debug.Log($"{_spawner.spawnedSnakes[0]} is winner winner chicken dinner!");
+                }
             }
             MoveHeadToTile(RandomValidNeighbour());
         }
         HandleCollisions();
-
         currentTime = tick;
     }
 
-    private Tile RandomValidNeighbour()
-    {
-        for (int i = 0; i < 50; i++)
-        {
-            int randomDirection = Random.Range(0, 4);
-            Tile newTile = headBody.currentTile.neighbourTiles[randomDirection];
-            if (newTile.walkable) { return newTile; }
-        }
-        return null;
-    }
-    
     public override void Start()
     {
         base.Start();
         pathfinding = GetComponent<Pathfinding>();
         map = FindObjectOfType<Map>();
-        _state = State.Focus;
+        _spawner = FindObjectOfType<Spawner>();
     }
-
 }

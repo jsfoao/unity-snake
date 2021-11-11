@@ -96,6 +96,8 @@ MonoBehaviour:
   playerSnakePrefab: {fileID: 1813152694199487170, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
   gridObjectPrefabs: {fileID: 1813152694199487170, guid: 8e25729a79a9f114b935112f016c7763, type: 3}
   spawnedObjects: []
+  spawnedObjectsEmpty: {fileID: 1965475387895146586}
+  spawnedSnakesEmpty: {fileID: 4253543633568499050}
 --- !u!1 &6505586868192577509
 GameObject:
   m_ObjectHideFlags: 0

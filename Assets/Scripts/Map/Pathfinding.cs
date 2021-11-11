@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Pathfinding : MonoBehaviour
 {
-    [SerializeField] private Vector2Int startTilePos;
-    [SerializeField] private Vector2Int targetTilePos;
+    [NonSerialized] private Vector2Int startTilePos;
+    [NonSerialized] private Vector2Int targetTilePos;
     
     private const int STRAIGHT_COST = 10;
 
@@ -99,22 +99,10 @@ public class Pathfinding : MonoBehaviour
         cost = distToTriangle * STRAIGHT_COST;
         return cost;
     }
-    
+
     private void Awake()
     {
         _map = FindObjectOfType<Map>();
-    }
-
-    private void Update()
-    {
-        // Testing
-        // startTilePos.x = Mathf.Clamp(startTilePos.x, 0, _map.size.x - 1);
-        // startTilePos.y = Mathf.Clamp(startTilePos.y, 0, _map.size.y - 1);
-        // targetTilePos.x = Mathf.Clamp(targetTilePos.x, 0, _map.size.x - 1);
-        // targetTilePos.y = Mathf.Clamp(targetTilePos.y, 0, _map.size.y - 1);
-        // Tile tile1 = _map.tileGrid[startTilePos.x, startTilePos.y];
-        // Tile tile2 = _map.tileGrid[targetTilePos.x, targetTilePos.y];
-        // pathList = FindPath(tile1, tile2);
     }
 
     private void OnDrawGizmos()
