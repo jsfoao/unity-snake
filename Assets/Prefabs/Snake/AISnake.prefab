@@ -46,10 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60097a6fbebd7894abf758086bd2a17a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _headColor: {r: 0.68894196, g: 0.40939838, b: 0.754717, a: 1}
   initialSize: 3
   bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
-  tick: 0.01
+  tick: 0.02
 --- !u!114 &1841540332692303650
 MonoBehaviour:
   m_ObjectHideFlags: 0

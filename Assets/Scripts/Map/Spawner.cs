@@ -21,6 +21,8 @@ public class Spawner : MonoBehaviour
     private Map map;
     private Transform parent;
 
+    [NonSerialized] public List<Color> possibleColors;
+
     private void SpawnSnake(Tile tile, int size = 3, bool isControlled = false)
     {
         if (tile == null)
@@ -80,15 +82,20 @@ public class Spawner : MonoBehaviour
     {
         map = GetComponent<Map>();
         parent = transform.GetChild(1);
+        possibleColors = new List<Color>();
+        possibleColors.Add(Color.magenta);
+        possibleColors.Add(Color.red);
+        possibleColors.Add(Color.blue);
+        possibleColors.Add(Color.yellow);
     }
 
     private void Start()
     {
         SpawnRandomFruit();
-        SpawnSnake(map.tileGrid[0, 0], 1);
-        SpawnSnake(map.tileGrid[0, 2], 1);
-        SpawnSnake(map.tileGrid[0, 4], 1);
-        SpawnSnake(map.tileGrid[0, 6], 1);
-        SpawnSnake(map.tileGrid[0, 8], 1);
+        SpawnSnake(map.tileGrid[0, 0], 3);
+        SpawnSnake(map.tileGrid[0, 2], 3);
+        SpawnSnake(map.tileGrid[0, 4], 3);
+        SpawnSnake(map.tileGrid[0, 6], 3);
+        SpawnSnake(map.tileGrid[0, 8], 3);
     }
 }
