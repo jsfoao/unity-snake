@@ -8,10 +8,6 @@ public class Snake : MonoBehaviour
 {
     // List of linked bodies
     public LList<Body> bodyParts;
-    
-    // Size of snake when spawned
-    [Header("Visuals")]
-    private Color _headColor;
 
     [Header("Properties")]
     [SerializeField] [Tooltip("Size of snake when spawned")] 
@@ -52,28 +48,13 @@ public class Snake : MonoBehaviour
             
             bodyParts.AddLast(body);
         }
-        
-        // Setting body color
-        body.GetComponent<SpriteRenderer>().color = _headColor;
-        
+
         size++;
         return body;
     }
     
     public void Create(Tile tile, int createSize)
     {
-        // Setting colors
-        if (_spawner.possibleColors.Count == 0)
-        {
-            _headColor = Color.black;
-        }
-        else
-        {
-            int randomIndex = Random.Range(0, _spawner.possibleColors.Count);
-            _headColor = _spawner.possibleColors[randomIndex];
-            _spawner.possibleColors.Remove(_headColor);   
-        }
-
         // Spawn head on tile
         Body headBody = AddBody();
         headBody.currentTile = tile; ;

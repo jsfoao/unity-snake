@@ -8,7 +8,7 @@ public class Pathfinding : MonoBehaviour
     [NonSerialized] private Vector2Int startTilePos;
     [NonSerialized] private Vector2Int targetTilePos;
     
-    private const int STRAIGHT_COST = 10;
+    private const int STRAIGHT_COST = 1;
 
     private List<Tile> pathList;
     
@@ -70,7 +70,7 @@ public class Pathfinding : MonoBehaviour
         }
         return null;
     }
-
+    
     private List<Tile> BacktrackPath(Tile startTile, Tile targetTile)
     {
         List<Tile> tilePath = new List<Tile>();
@@ -86,7 +86,7 @@ public class Pathfinding : MonoBehaviour
         return tilePath;
     }
     
-    private int TileDistanceCost(Tile tileA, Tile tileB)
+    public int TileDistanceCost(Tile tileA, Tile tileB)
     {
         int cost = 0;
         if (tileA == null || tileB == null)
@@ -94,20 +94,9 @@ public class Pathfinding : MonoBehaviour
 
         int dx = Math.Abs(tileA.gridPosition.x - tileB.gridPosition.x);
         int dy = Math.Abs(tileA.gridPosition.y - tileB.gridPosition.y);
-        int distToTriangle = Math.Abs(dx - dy);
+        int dTotal = dx + dy;
 
-        cost = distToTriangle * STRAIGHT_COST;
+        cost = dTotal * STRAIGHT_COST;
         return cost;
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (pathList == null) { return; }
-        
-        Gizmos.color = Color.blue;
-        foreach (var tile in pathList)
-        {
-            Gizmos.DrawCube(tile.worldPosition, new Vector3(.2f, .2f, .2f));
-        }
     }
 }

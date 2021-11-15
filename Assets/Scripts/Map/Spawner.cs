@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -9,7 +10,7 @@ public class Spawner : MonoBehaviour
     [Header("Spawnable entities")]
     [SerializeField] private GameObject entitySnakePrefab;
     [SerializeField] private GameObject playerSnakePrefab;
-    [SerializeField] private GameObject gridObjectPrefabs;
+    [SerializeField] private GameObject[] gridObjectPrefabs;
     
     [Header("Transform parents")]
     [SerializeField] private Transform spawnedObjectsEmpty;
@@ -20,10 +21,9 @@ public class Spawner : MonoBehaviour
 
     private Map map;
     private Transform parent;
-
-    [NonSerialized] public List<Color> possibleColors;
-
-    private void SpawnSnake(Tile tile, int size = 3, bool isControlled = false)
+    
+    // Methods
+    public void SpawnSnake(Tile tile, int size = 3, bool isControlled = false)
     {
         if (tile == null)
         {
@@ -40,62 +40,70 @@ public class Spawner : MonoBehaviour
         spawnedSnakes.Add(newSnake);
     }
 
-    public void SpawnRandomFruit()
+    public void SpawnRandomObjectOfType(ObjectType objectType)
     {
         Tile randomValidTile = RandomValidTile();
         if (randomValidTile != null)
         {
-            SpawnObject(gridObjectPrefabs, randomValidTile);
+            SpawnObjectOfType(objectType, randomValidTile);
         }
-        else { Debug.Log("Game over: No more space for fruits"); }
-    }
-
-    private Tile RandomValidTile()
-    {
-        for (int i = 0; i < 100; i++)
-        {
-            Vector2Int randomPosition = new Vector2Int(Random.Range(0, map.size.x), Random.Range(0, map.size.y));
-            Tile tileToSpawnOn = map.tileGrid[randomPosition.x, randomPosition.y];
-            if (tileToSpawnOn.walkable) { return tileToSpawnOn; }
-        }
-        return null;
+        else { Debug.Log("Couldn't spawn object: No possible valid tiles"); }
     }
     
-    private GameObject SpawnObject(GameObject gridObjectPrefab, Tile tile)
+    public GameObject SpawnObjectOfType(ObjectType objectType, Tile tile)
     {
-        GameObject instance = Instantiate(gridObjectPrefab, tile.worldPosition, Quaternion.identity, spawnedObjectsEmpty);
+        GameObject objectToSpawn = FindPrefabOfType(objectType);
+        GameObject instance = Instantiate(objectToSpawn, tile.worldPosition, Quaternion.identity, spawnedObjectsEmpty);
         GridObject gridObject = instance.GetComponent<GridObject>();
         gridObject.currentTile = tile;
         tile.currentObjects.Add(gridObject);
         spawnedObjects.Add(gridObject);
         return instance;
     }
-    
+
     public void DestroyObject(GridObject gridObject)
     {
         gridObject.currentTile.currentObjects.Remove(gridObject);
         spawnedObjects.Remove(gridObject);
         Destroy(gridObject.gameObject);
     }
+
+    // Other
+    private Tile RandomValidTile()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            Vector2Int randomPosition = new Vector2Int(Random.Range(0, map.size.x), Random.Range(0, map.size.y));
+            Tile tileToSpawnOn = map.tileGrid[randomPosition.x, randomPosition.y];
+            if (tileToSpawnOn.walkable && tileToSpawnOn.currentObjects.Count == 0) { return tileToSpawnOn; }
+        }
+        return null;
+    }
+
+    private GameObject FindPrefabOfType(ObjectType objectType)
+    {
+        foreach (var prefab in gridObjectPrefabs)
+        {
+            GridObject currentObject = prefab.GetComponent<GridObject>();
+            if (currentObject.objectType == objectType)
+            {
+                return prefab;
+            }
+        }
+        Debug.Log($"Couldn't find object of type {objectType}");
+        return null;
+    }
     
     private void Awake()
     {
         map = GetComponent<Map>();
         parent = transform.GetChild(1);
-        possibleColors = new List<Color>();
-        possibleColors.Add(Color.magenta);
-        possibleColors.Add(Color.red);
-        possibleColors.Add(Color.blue);
-        possibleColors.Add(Color.yellow);
     }
 
     private void Start()
     {
-        SpawnRandomFruit();
-        SpawnSnake(map.tileGrid[0, 0], 3);
-        SpawnSnake(map.tileGrid[0, 2], 3);
-        SpawnSnake(map.tileGrid[0, 4], 3);
-        SpawnSnake(map.tileGrid[0, 6], 3);
-        SpawnSnake(map.tileGrid[0, 8], 3);
+        SpawnRandomObjectOfType(ObjectType.Fruit);
+        SpawnRandomObjectOfType(ObjectType.None);
+        SpawnSnake(map.tileGrid[0, 0]);
     }
 }

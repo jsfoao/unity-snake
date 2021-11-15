@@ -49,12 +49,6 @@ public class EntityController : MonoBehaviour, IEntityController
     // Handle movement
     public virtual void MovementTick()
     {
-        // Check for new headBody every tick
-        if (snake.bodyParts != null)
-        {
-            headBody = snake.bodyParts.Head.Item;
-        }
-        
         // Check if last input is a valid move
         if (IsValidMovement())
         {
@@ -77,5 +71,10 @@ public class EntityController : MonoBehaviour, IEntityController
         _desiredDirection = Direction.Up;
         _currentDirection = Direction.Up;
         enableInput = true;
+        
+        if (snake.bodyParts != null)
+        {
+            headBody = snake.bodyParts.Head.Item;
+        }
     }
 }

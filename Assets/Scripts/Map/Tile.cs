@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -18,12 +20,18 @@ public class Tile : MonoBehaviour
     [SerializeField] public int hCost;
     
     [NonSerialized] public bool walkable;
-    
+    public bool targeted;
     public int fCost => gCost + hCost;
 
     private void Awake()
     {
         currentObjects = new List<GridObject>();
         walkable = true;
+    }
+
+    public void ResetCost()
+    {
+        gCost = 0;
+        hCost = 0;
     }
 }

@@ -8,13 +8,13 @@ public class SnakeCollisions : MonoBehaviour
 
     public void CollisionTick()
     {
-        // If only present object in tile is self
+        // Don't check collisions if no other objects to compare
         if (headBody.currentTile.currentObjects.Count == 1) { return; }
 
         foreach (GridObject gridObject in headBody.currentTile.currentObjects)
         {
             // Collision with body
-            if (gridObject.type == ObjectType.Body && gridObject != headBody)
+            if (gridObject.objectType == ObjectType.Body && gridObject != headBody)
             {
                 _snake.DestroySelf();
                 
@@ -27,12 +27,10 @@ public class SnakeCollisions : MonoBehaviour
                 return;
             }
             
-            // Collision with fruit
-            if (gridObject.type == ObjectType.Fruit)
+            // Collision with grid object
+            if (gridObject.GetComponent<GridCollider>() != null)
             {
-                _spawner.DestroyObject(gridObject);
-                _spawner.SpawnRandomFruit();
-                _snake.AddBody();
+                gridObject.GetComponent<GridCollider>().OnCollision(this);
                 return;
             }
         }

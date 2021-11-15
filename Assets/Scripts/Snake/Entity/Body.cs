@@ -26,6 +26,6 @@ public class Body : GridObject
 
     private void Awake()
     {
-        type = ObjectType.Body;
+        objectType = ObjectType.Body;
     }
 }

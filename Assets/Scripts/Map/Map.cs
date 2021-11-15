@@ -103,6 +103,18 @@ public class Map : MonoBehaviour
         }
     }
 
+    public void ResetTileCosts()
+    {
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int y = 0; y < size.y; y++)
+            {
+                tileGrid[x, y].hCost = 0;
+                tileGrid[x, y].gCost = 0;
+            }
+        }
+    }
+
     private void Awake()
     {
         GenerateMap();

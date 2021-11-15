@@ -95,10 +95,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ae592c016a45145abd06d75e264108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkable: 0
-  gridPosition: {x: 0, y: 0}
-  worldPosition: {x: 0, y: 0}
-  neighbourTileLeft: {fileID: 0}
-  neighbourTileRight: {fileID: 0}
-  neighbourTileDown: {fileID: 0}
-  neighbourTileUp: {fileID: 0}
+  currentObjects: []
+  hCost: 0
