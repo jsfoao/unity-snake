@@ -1,18 +1,21 @@
 using System;
 using UnityEngine;
 
-public class Body : GridObject
+public class Body : MonoBehaviour
 {
+    public GridObject gridObject;
     [NonSerialized] public Tile previousTile;
-    public Snake snake;
+    [NonSerialized] public Snake snake;
+    public bool linked;
 
     public void MoveToTile(Tile tile)
     {
+        if (!linked) { return; }
         if (tile == null) { return; }
         transform.position = tile.worldPosition;
-        Tile temp = currentTile;
+        Tile temp = gridObject.currentTile;
         previousTile = temp;
-        currentTile = tile;
+        gridObject.currentTile = tile;
         
         UpdateTileProperties();
     }
@@ -20,13 +23,13 @@ public class Body : GridObject
     private void UpdateTileProperties()
     {
         previousTile.walkable = true;
-        currentTile.walkable = false;
-        previousTile.currentObjects.Remove(this);
-        currentTile.currentObjects.Add(this);
+        gridObject.currentTile.walkable = false;
+        previousTile.currentObjects.Remove(gridObject);
+        gridObject.currentTile.currentObjects.Add(gridObject);
     }
 
     private void Awake()
     {
-        objectType = ObjectType.Body;
+        gridObject = GetComponent<GridObject>();
     }
 }

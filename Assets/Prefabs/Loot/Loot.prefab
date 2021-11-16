@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e734d504f01f6446a438fd3b226b93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CollisionType: 1
 --- !u!114 &180748117459342445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,4 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66621dd0c64b5034097adcea2693ddb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridCollider: {fileID: 0}
+  Spawner: {fileID: 0}
+  GridObject: {fileID: 0}

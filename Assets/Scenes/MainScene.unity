@@ -215,7 +215,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1383786976446841515, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: gridObjectPrefabs.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1383786976446841515, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: gridObjectPrefabs.Array.data[0]
@@ -225,6 +225,10 @@ PrefabInstance:
       propertyPath: gridObjectPrefabs.Array.data[1]
       value: 
       objectReference: {fileID: 1813152694199487170, guid: 55a0fd47481f366449032da6285feb17, type: 3}
+    - target: {fileID: 1383786976446841515, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
+      propertyPath: gridObjectPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
     - target: {fileID: 1998859222532087298, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: m_RootOrder
       value: 1

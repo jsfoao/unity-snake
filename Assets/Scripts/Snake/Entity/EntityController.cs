@@ -32,7 +32,7 @@ public class EntityController : MonoBehaviour, IEntityController
     // Locks snake from moving to previous tile
     private bool IsValidMovement()
     {
-        return headBody.currentTile.neighbourTiles[(int)_desiredDirection] != headBody.previousTile;
+        return headBody.gridObject.currentTile.neighbourTiles[(int)_desiredDirection] != headBody.previousTile;
     }
     
     public void ChangeDirection(Direction direction)
@@ -56,7 +56,7 @@ public class EntityController : MonoBehaviour, IEntityController
         }
 
         // Move head of snake to tile set by input
-        Tile newTile = headBody.currentTile.neighbourTiles[(int) _currentDirection];
+        Tile newTile = headBody.gridObject.currentTile.neighbourTiles[(int) _currentDirection];
         headBody.MoveToTile(newTile);
 
         // Evaluate remaining body positions

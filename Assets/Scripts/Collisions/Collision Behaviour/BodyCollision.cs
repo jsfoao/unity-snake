@@ -2,39 +2,20 @@ using UnityEngine;
 
 public class BodyCollision : CollisionBehaviour
 {
-    private Spawner _spawner;
-    public override void OnCollision(GridCollider gridCollider)
+    public override void OnCollision(GridCollider otherCollider)
     {
-        Body body = GetComponent<Body>();
-        if (body.objectType != ObjectType.Body)
-        {
-            DisconnectedCollision();
-            return;
-        }
+        if (gridCollider.CollisionType == CollisionType.Passive) { return; }
         
-        Snake snake = body.snake;
-        // is head
-        if (snake.bodyParts[0] == body)
-        {
-            Body otherBody = gridCollider.GetComponent<Body>();
-            if (otherBody == null) { return; }
-            
-            // other collider is body type
-            if (otherBody.objectType == ObjectType.Body)
-            {
-                snake.DeathBehaviour();
-            }
-        }
-    }
-
-    private void DisconnectedCollision()
-    {
-        _spawner.DestroyObject(GetComponent<GridObject>());
+        //Destroy object
+        Spawner.DestroyObject(GetComponent<GridObject>());
+        
+        // Add to snake body
+        Snake snake = otherCollider.GetComponent<Body>().snake;
+        if (snake != null) { snake.AddBody(); }
     }
 
     public override void Awake()
     {
         base.Awake();
-        _spawner = FindObjectOfType<Spawner>();
     }
 }

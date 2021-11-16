@@ -24,7 +24,7 @@ public class AIController : EntityController
     private Tile RandomValidNeighbour()
     {
         List<Tile> possibleTiles = new List<Tile>();
-        foreach (Tile tile in headBody.currentTile.neighbourTiles)
+        foreach (Tile tile in headBody.gridObject.currentTile.neighbourTiles)
         {
             if (tile.walkable)
             {
@@ -48,7 +48,7 @@ public class AIController : EntityController
         
         // Find new optimal path to object
         ResetPathCosts();
-        currentTilePath = pathfinding.FindPath(headBody.currentTile, targetTile);
+        currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
         
         // Move along path if it's valid
         if (currentTilePath != null)
@@ -62,7 +62,7 @@ public class AIController : EntityController
         if (randomNeighbour == null)
         {
             // Move up and die
-            MoveHeadToTile(headBody.currentTile.neighbourTiles[(int)Direction.Up]);
+            MoveHeadToTile(headBody.gridObject.currentTile.neighbourTiles[(int)Direction.Up]);
             return;
         }
         // Move in random direction if path wasn't found

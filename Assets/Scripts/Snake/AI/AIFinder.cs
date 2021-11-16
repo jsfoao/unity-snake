@@ -20,7 +20,7 @@ public class AIFinder : MonoBehaviour
             if (gridObject.objectType == objectType)
             {
                 flag = 1;
-                int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.currentTile);
+                int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.gridObject.currentTile);
                 if (distanceCost < max)
                 {
                     max = distanceCost;
@@ -43,7 +43,7 @@ public class AIFinder : MonoBehaviour
         for (int i = 0; i < _spawner.spawnedObjects.Count; i++)
         {
             GridObject gridObject = _spawner.spawnedObjects[i];
-            int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.currentTile);
+            int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.gridObject.currentTile);
             if (distanceCost < max)
             {
                 max = distanceCost;
@@ -65,7 +65,7 @@ public class AIFinder : MonoBehaviour
         {
             GridObject gridObject = _spawner.spawnedObjects[i];
             
-            int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.currentTile);
+            int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.gridObject.currentTile);
             int totalCost = distanceCost + gridObject.GetWeight();
             if (totalCost < max)
             {

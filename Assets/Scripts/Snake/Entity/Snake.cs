@@ -35,7 +35,7 @@ public class Snake : MonoBehaviour
             spawnedGameObject = Instantiate(bodyPrefab, transform);
             body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
-            body.currentTile = null;
+            body.gridObject.currentTile = null;
             bodyParts.AddLast(body);
         }
         else
@@ -43,12 +43,14 @@ public class Snake : MonoBehaviour
             spawnedGameObject = Instantiate(bodyPrefab, bodyParts.Tail.Item.transform.position, Quaternion.identity, transform);
             body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
-            body.currentTile = bodyParts.Tail.Item.currentTile;
+            body.gridObject.currentTile = bodyParts.Tail.Item.gridObject.currentTile;
             
             bodyParts.AddLast(body);
         }
 
         body.snake = this;
+        body.linked = true;
+        body.GetComponent<GridCollider>().CollisionType = CollisionType.Passive;
         size++;
         return body;
     }
@@ -57,8 +59,7 @@ public class Snake : MonoBehaviour
     {
         for (int i = index; i < bodyParts.Count; i++)
         {
-            bodyParts[i].snake = null;
-            bodyParts[i].objectType = ObjectType.None;
+            bodyParts[i].GetComponent<SliceableBody>().Unlink();
         }
         bodyParts.RemoveTailUntil(index);
     }
@@ -68,7 +69,7 @@ public class Snake : MonoBehaviour
         // Spawn head on tile
         Body headBody = AddBody();
         tickEvent.AddListener(headBody.GetComponent<GridCollider>().CollisionCheck);
-        headBody.currentTile = tile;
+        headBody.gridObject.currentTile = tile;
         
         // Spawn rest of body on adjacent neighbour tiles
         for (int i = 1; i < createSize; i++)
@@ -82,7 +83,7 @@ public class Snake : MonoBehaviour
         var bodyNode = bodyParts.Head;
         while (bodyNode.Next != null)
         {
-            bodyNode.Item.currentTile.currentObjects.Clear();
+            bodyNode.Item.gridObject.currentTile.currentObjects.Clear();
             bodyNode = bodyNode.Next;
         }
         Destroy(gameObject);

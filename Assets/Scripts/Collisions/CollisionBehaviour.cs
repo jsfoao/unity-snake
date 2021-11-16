@@ -3,11 +3,17 @@ using UnityEngine;
 
 public class CollisionBehaviour : MonoBehaviour
 {
-    public virtual void OnCollision(GridCollider gridCollider)
+    [NonSerialized] public Spawner Spawner;
+    [NonSerialized] public GridObject GridObject;
+    public GridCollider gridCollider;
+    public virtual void OnCollision(GridCollider otherCollider)
     {
-        // Do collision behaviour
     }
+
     public virtual void Awake()
     {
+        Spawner = FindObjectOfType<Spawner>();
+        GridObject = GetComponent<GridObject>();
+        gridCollider = GetComponent<GridCollider>();
     }
 }
