@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Random = UnityEngine.Random;
 
 public class Snake : MonoBehaviour
 {
@@ -49,15 +48,27 @@ public class Snake : MonoBehaviour
             bodyParts.AddLast(body);
         }
 
+        body.snake = this;
         size++;
         return body;
+    }
+
+    public void CutTailUntil(int index)
+    {
+        for (int i = index; i < bodyParts.Count; i++)
+        {
+            bodyParts[i].snake = null;
+            bodyParts[i].objectType = ObjectType.None;
+        }
+        bodyParts.RemoveTailUntil(index);
     }
     
     public void Create(Tile tile, int createSize)
     {
         // Spawn head on tile
         Body headBody = AddBody();
-        headBody.currentTile = tile; ;
+        tickEvent.AddListener(headBody.GetComponent<GridCollider>().CollisionCheck);
+        headBody.currentTile = tile;
         
         // Spawn rest of body on adjacent neighbour tiles
         for (int i = 1; i < createSize; i++)
@@ -78,6 +89,23 @@ public class Snake : MonoBehaviour
         _spawner.spawnedSnakes.Remove(this);
     }
 
+    public void DeathBehaviour()
+    {
+        Debug.Log($"{this} snake is ded!");
+        DestroySelf();
+        CheckWinner();
+    }
+
+    private void CheckWinner()
+    {
+        // Check if winner
+        if (_spawner.spawnedSnakes.Count == 1)
+        {
+            Time.timeScale = 0f;
+            Debug.Log($"{_spawner.spawnedSnakes[0]} is winner winner chicken dinner!");
+        }
+    }
+    
     private void Update()
     {
         currentTime -= Time.deltaTime;
@@ -90,10 +118,9 @@ public class Snake : MonoBehaviour
     {
         bodyParts = new LList<Body>();
         _spawner = FindObjectOfType<Spawner>();
-
+        
         // Tick event listeners
         tickEvent = new UnityEvent();
-        tickEvent.AddListener(GetComponent<SnakeCollisions>().CollisionTick);
         tickEvent.AddListener(GetComponent<EntityController>().MovementTick);
     }
 }

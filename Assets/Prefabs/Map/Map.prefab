@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 1998859222532087298}
   - component: {fileID: 1998859222532087357}
   - component: {fileID: 1383786976446841515}
+  - component: {fileID: 212201351997757718}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -94,10 +95,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entitySnakePrefab: {fileID: 1813152694199487170, guid: 957e8508b198a9548a204b168e7131ef, type: 3}
   playerSnakePrefab: {fileID: 1813152694199487170, guid: 90bc4463fa13a2b4eabddccb4437ac9b, type: 3}
-  gridObjectPrefabs: {fileID: 1813152694199487170, guid: 8e25729a79a9f114b935112f016c7763, type: 3}
-  spawnedObjects: []
+  gridObjectPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnedObjectsEmpty: {fileID: 1965475387895146586}
   spawnedSnakesEmpty: {fileID: 4253543633568499050}
+  spawnedObjects: []
+  spawnedSnakes: []
+--- !u!114 &212201351997757718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998859222532087299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1140d696c0994894384db8a732e2636c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6505586868192577509
 GameObject:
   m_ObjectHideFlags: 0

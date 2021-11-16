@@ -57,7 +57,7 @@ public class AIFinder : MonoBehaviour
     // Object with the lowest cost of distance + weight
     public GridObject LowestCostObject()
     {
-        if (_spawner.spawnedObjects == null) { return null; }
+        if (_spawner.spawnedObjects == null || _spawner.spawnedObjects.Count == 0) { return null; }
 
         int index = 0;
         int max = 99999;
@@ -80,8 +80,8 @@ public class AIFinder : MonoBehaviour
     {
         // Object components
         aiController = GetComponent<AIController>();
-        _pathfinding = GetComponent<Pathfinding>();
         
+        _pathfinding = FindObjectOfType<Pathfinding>();
         _spawner = FindObjectOfType<Spawner>();
     }
 }

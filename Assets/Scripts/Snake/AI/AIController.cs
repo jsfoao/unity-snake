@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Color = UnityEngine.Color;
+using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Pathfinding))]
 [RequireComponent(typeof(AIFinder))]
 public class AIController : EntityController
 {
@@ -11,7 +11,7 @@ public class AIController : EntityController
     private Pathfinding pathfinding;
     private AIFinder aiFinder;
 
-    [SerializeField] private List<Tile> currentTilePath;
+    private List<Tile> currentTilePath;
 
     // Move head to chosen tile
     private void MoveHeadToTile(Tile tile)
@@ -45,7 +45,6 @@ public class AIController : EntityController
     {
         // Find fruit's tile
         Tile targetTile = aiFinder.LowestCostObject().currentTile;
-        Debug.Log($"Lowest cost object: {aiFinder.LowestCostObject()}");
         
         // Find new optimal path to object
         ResetPathCosts();
@@ -85,9 +84,9 @@ public class AIController : EntityController
     {
         base.Start();
         // Object components
-        pathfinding = GetComponent<Pathfinding>();
         aiFinder = GetComponent<AIFinder>();
         
+        pathfinding = FindObjectOfType<Pathfinding>();
         map = FindObjectOfType<Map>();
         _spawner = FindObjectOfType<Spawner>();
     }

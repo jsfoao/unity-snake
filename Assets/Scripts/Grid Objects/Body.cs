@@ -4,6 +4,7 @@ using UnityEngine;
 public class Body : GridObject
 {
     [NonSerialized] public Tile previousTile;
+    public Snake snake;
 
     public void MoveToTile(Tile tile)
     {

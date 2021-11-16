@@ -1,23 +1,39 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CollisionBehaviour))]
 public class GridCollider : MonoBehaviour
 {
-    private Spawner _spawner;
-    private GridObject _gridObject;
-    
-    public void OnCollision(SnakeCollisions collisions)
+    public GridObject gridObject;
+    public CollisionBehaviour collisionBehaviour;
+
+    public void CollisionCheck()
     {
-        _spawner.SpawnRandomObjectOfType(_gridObject.objectType);
-        if (_gridObject.objectType == ObjectType.Fruit)
+        if (gridObject.currentTile.currentObjects == null) { return; }
+        if (gridObject.currentTile.currentObjects.Count > 1)
         {
-            collisions.GetComponent<Snake>().AddBody();
+            GridCollider otherCollider = FindCollider();
+            if (otherCollider == null) { return; }
+            collisionBehaviour.OnCollision(otherCollider);
+            otherCollider.collisionBehaviour.OnCollision(this);
         }
-        _spawner.DestroyObject(_gridObject);
     }
 
+    private GridCollider FindCollider()
+    {
+        foreach (GridObject go in gridObject.currentTile.currentObjects)
+        {
+            if (go != gridObject && go.GetComponent<GridCollider>() == true)
+            {
+                GridCollider gridCollider = go.GetComponent<GridCollider>();
+                return gridCollider;
+            }
+        }
+        return null;
+    }
+    
     private void Start()
     {
-        _spawner = FindObjectOfType<Spawner>();
-        _gridObject = GetComponent<GridObject>();
+        gridObject = GetComponent<GridObject>();
+        collisionBehaviour = GetComponent<CollisionBehaviour>();
     }
 }

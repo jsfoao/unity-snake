@@ -179,7 +179,14 @@ namespace System.Collections.Generic
                 counter++;
             }
         }
-        
+
+        public void RemoveTailUntil(int index)
+        {
+            while (Count - 1 != index - 1)
+            {
+                RemoveAt(Count - 1);
+            }
+        }
         // Indexer
         public T this[int index]
         {

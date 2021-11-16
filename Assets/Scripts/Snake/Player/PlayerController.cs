@@ -25,6 +25,10 @@ public class PlayerController : EntityController
         {
             ChangeDirection(Direction.Down);
         }
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            GetComponent<Snake>().CutTailUntil(1);
+        }
     }
 
     public void Update()

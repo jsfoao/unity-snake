@@ -40,7 +40,7 @@ public class Spawner : MonoBehaviour
         spawnedSnakes.Add(newSnake);
     }
 
-    public void SpawnRandomObjectOfType(ObjectType objectType)
+    public void SpawnObjectOfTypeInRandomPosition(ObjectType objectType)
     {
         Tile randomValidTile = RandomValidTile();
         if (randomValidTile != null)
@@ -53,6 +53,11 @@ public class Spawner : MonoBehaviour
     public GameObject SpawnObjectOfType(ObjectType objectType, Tile tile)
     {
         GameObject objectToSpawn = FindPrefabOfType(objectType);
+        if (objectToSpawn == null)
+        {
+            Debug.Log($"Couldn't find object of type {objectType}");
+            return null;
+        }
         GameObject instance = Instantiate(objectToSpawn, tile.worldPosition, Quaternion.identity, spawnedObjectsEmpty);
         GridObject gridObject = instance.GetComponent<GridObject>();
         gridObject.currentTile = tile;
@@ -90,7 +95,6 @@ public class Spawner : MonoBehaviour
                 return prefab;
             }
         }
-        Debug.Log($"Couldn't find object of type {objectType}");
         return null;
     }
     
@@ -102,8 +106,10 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        SpawnRandomObjectOfType(ObjectType.Fruit);
-        SpawnRandomObjectOfType(ObjectType.None);
-        SpawnSnake(map.tileGrid[0, 0]);
+        SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
+        // SpawnObjectOfTypeInRandomPosition(ObjectType.Loot);
+        // SpawnSnake(map.tileGrid[0, 0]);
+        // SpawnSnake(map.tileGrid[0, 2]);
+        SpawnSnake(map.tileGrid[0, 0], 5, true);
     }
 }
