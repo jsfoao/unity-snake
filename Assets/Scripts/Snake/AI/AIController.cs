@@ -12,6 +12,7 @@ public class AIController : EntityController
     private AIFinder aiFinder;
 
     private List<Tile> currentTilePath;
+    [SerializeField] private bool enableMovement;
 
     // Move head to chosen tile
     private void MoveHeadToTile(Tile tile)
@@ -43,20 +44,26 @@ public class AIController : EntityController
     // To perform every tick
     public override void MovementTick()
     {
-        // Find fruit's tile
-        Tile targetTile = aiFinder.LowestCostObject().currentTile;
+        if (!enableMovement) { return; }
         
-        // Find new optimal path to object
         ResetPathCosts();
-        currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
-        
-        // Move along path if it's valid
-        if (currentTilePath != null)
+        GridObject lowestCostObject = aiFinder.LowestCostObject();
+        if (lowestCostObject != null)
         {
-            MoveHeadToTile(currentTilePath[0]);
-            return;
+            // Find fruit's tile
+            Tile targetTile = lowestCostObject.currentTile;
+            
+            // Find new optimal path to object
+            currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
+
+            // Move along path if it's valid
+            if (currentTilePath != null)
+            {
+                MoveHeadToTile(currentTilePath[0]);
+                return;
+            }
         }
-        
+
         Tile randomNeighbour = RandomValidNeighbour();
         // No possible valid random direction
         if (randomNeighbour == null)

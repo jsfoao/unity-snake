@@ -50,7 +50,6 @@ public class Snake : MonoBehaviour
 
         body.snake = this;
         body.linked = true;
-        body.GetComponent<GridCollider>().CollisionType = CollisionType.Passive;
         size++;
         return body;
     }
@@ -68,7 +67,6 @@ public class Snake : MonoBehaviour
     {
         // Spawn head on tile
         Body headBody = AddBody();
-        tickEvent.AddListener(headBody.GetComponent<GridCollider>().CollisionCheck);
         headBody.gridObject.currentTile = tile;
         
         // Spawn rest of body on adjacent neighbour tiles
@@ -123,5 +121,7 @@ public class Snake : MonoBehaviour
         // Tick event listeners
         tickEvent = new UnityEvent();
         tickEvent.AddListener(GetComponent<EntityController>().MovementTick);
+        tickEvent.AddListener(GetComponent<Collisions>().CheckCollision);
+
     }
 }

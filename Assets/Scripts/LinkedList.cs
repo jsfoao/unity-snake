@@ -180,6 +180,12 @@ namespace System.Collections.Generic
             }
         }
 
+        // todo remove last method
+        public void RemoveLast()
+        {
+            
+        }
+
         public void RemoveTailUntil(int index)
         {
             while (Count - 1 != index - 1)

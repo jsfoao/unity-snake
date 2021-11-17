@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SliceableBody : MonoBehaviour
@@ -5,12 +6,14 @@ public class SliceableBody : MonoBehaviour
     private Body body;
     public void Unlink()
     {
-        transform.localScale = new Vector3(.5f, .5f, .5f);
-        GetComponent<SpriteRenderer>().color = Color.blue;
         body.snake = null;
         body.previousTile = null;
         body.linked = false;
-        GetComponent<GridCollider>().CollisionType = CollisionType.Active;
+    }
+
+    private void Update()
+    {
+        transform.localScale = !body.linked ? new Vector3(.6f, .6f, .6f) : new Vector3(.8f, .8f, .8f);
     }
 
     private void Awake()

@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 3666804176219160300}
   - component: {fileID: 3190798351737297069}
   - component: {fileID: -2508549154398459664}
-  - component: {fileID: -8105219083591552898}
-  - component: {fileID: -2745321527917758238}
   - component: {fileID: -7060892438166237893}
   m_Layer: 0
   m_Name: Body
@@ -115,32 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 2
   tier: 5
---- !u!114 &-8105219083591552898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813152694199487170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e734d504f01f6446a438fd3b226b93b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CollisionType: 1
---- !u!114 &-2745321527917758238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1813152694199487170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf5f849071fd1e478b4bbd5f81b899f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridCollider: {fileID: 0}
+  enableCollision: 1
 --- !u!114 &-7060892438166237893
 MonoBehaviour:
   m_ObjectHideFlags: 0

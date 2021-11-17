@@ -97,3 +97,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentObjects: []
   hCost: 0
+  targeted: 0

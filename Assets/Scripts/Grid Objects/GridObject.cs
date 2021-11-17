@@ -7,6 +7,7 @@ public class GridObject : MonoBehaviour
     [SerializeField] public ObjectType objectType;
     [Tooltip("Higher tier means bigger weight")]
     [SerializeField] [Range(1, 5)] public int tier;
+    [SerializeField] public bool enableCollision;
 
     public int GetWeight()
     {
