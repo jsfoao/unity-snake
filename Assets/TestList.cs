@@ -19,10 +19,13 @@ public class TestList : MonoBehaviour
         intList.AddLast(6);
         intList.AddLast(7);
         
-        intList.RemoveTailUntil(4);
+        intList.RemoveTailUntil(3);
+        intList.AddLast(69);
+        
         PrintList(intList);
+        print($"Head: {intList.Head.Item}");
+        print($"Tail: {intList.Tail.Item}");
     }
-
     private void PrintList(LList<int> linkedList)
     {
         for (int i = 0; i < linkedList.Count; i++)

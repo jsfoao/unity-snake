@@ -171,19 +171,21 @@ namespace System.Collections.Generic
             { 
                 if (counter == index) 
                 { 
+                    if (index == Count - 1)
+                    {   
+                        Tail = node;
+                        Tail.Next = null;
+                        Count--;
+                        return;
+                    }
+                    
                     node.Next = node.Next.Next; 
-                    Count--; 
+                    Count--;
                     return; 
                 } 
                 node = node.Next; 
                 counter++;
             }
-        }
-
-        // todo remove last method
-        public void RemoveLast()
-        {
-            
         }
 
         public void RemoveTailUntil(int index)
