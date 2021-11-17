@@ -1,9 +1,11 @@
-using System;
 using UnityEngine;
 
 public class SliceableBody : MonoBehaviour
 {
     private Body body;
+    private Color defaultColor;
+    [SerializeField] private Color deadColor;
+    private SpriteRenderer _spriteRenderer;
     public void Unlink()
     {
         body.snake = null;
@@ -13,11 +15,22 @@ public class SliceableBody : MonoBehaviour
 
     private void Update()
     {
-        transform.localScale = !body.linked ? new Vector3(.6f, .6f, .6f) : new Vector3(.8f, .8f, .8f);
+        if (body.linked)
+        {
+            transform.localScale = new Vector3(.8f, .8f, .8f);
+            GetComponent<SpriteRenderer>().color = defaultColor;
+        }
+        else
+        {
+            transform.localScale = new Vector3(.6f, .6f, .6f);
+            GetComponent<SpriteRenderer>().color = deadColor;
+        }
     }
 
     private void Awake()
     {
         body = GetComponent<Body>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        defaultColor = _spriteRenderer.color;
     }
 }

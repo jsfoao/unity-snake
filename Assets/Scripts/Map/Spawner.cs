@@ -107,10 +107,7 @@ public class Spawner : MonoBehaviour
     private void Start()
     {
         SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
-        SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
-        SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
-        SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
-        SpawnSnake(map.tileGrid[0, 10], 3, true);
+        SpawnSnake(map.tileGrid[0, 10], 10, true);
         SpawnSnake(map.tileGrid[0, 2]);
         SpawnSnake(map.tileGrid[0, 4]);
     }

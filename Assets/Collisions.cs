@@ -9,7 +9,53 @@ public class Collisions : MonoBehaviour
     
     // Handling collision behaviour
     private Spawner _spawner;
+    
+    private void OnCollision(GridObject otherGridObject)
+    {
+        Debug.Log($"{headBody.snake} collided with {otherGridObject}");
+        
+        // Fruit collision
+        if (otherGridObject.objectType == ObjectType.Fruit)
+        {
+            _spawner.DestroyObject(otherGridObject);
+            _snake.AddBody();
+            _spawner.SpawnObjectOfTypeInRandomPosition(otherGridObject.objectType);
+        }
 
+        // Body collision
+        if (otherGridObject.objectType == ObjectType.Body)
+        {
+            Body otherBody = otherGridObject.GetComponent<Body>();
+            
+            // Other body is linked and not head
+            if (otherBody.linked && otherBody != otherBody.snake.bodyParts[0])
+            {
+                
+                // Cut tail if linked and is bigger than other snake
+                if (_snake.size > otherBody.snake.size)
+                {
+                }
+                // else
+                // {
+                //     _snake.DeathBehaviour();
+                // }
+            }
+            
+            // Other body is linked and is head
+            else if (otherBody.linked && otherBody == otherBody.snake.bodyParts[0])
+            {
+                _snake.DeathBehaviour();
+            }
+            
+            // Eat if not linked
+            else if (!otherBody.linked)
+            {
+                _spawner.DestroyObject(otherGridObject);
+                _snake.AddBody();   
+            }
+        }
+    }
+    
     public void CheckCollision()
     {
         headBody = _snake.bodyParts[0];
@@ -22,35 +68,6 @@ public class Collisions : MonoBehaviour
             
             // Collision happened
             OnCollision(otherGridObject);
-        }
-    }
-
-    private void OnCollision(GridObject otherGridObject)
-    {
-        Debug.Log($"{headBody.snake} collided with {otherGridObject}");
-        if (otherGridObject.objectType == ObjectType.Fruit)
-        {
-            _spawner.DestroyObject(otherGridObject);
-            _snake.AddBody();
-            _spawner.SpawnObjectOfTypeInRandomPosition(otherGridObject.objectType);
-        }
-
-        if (otherGridObject.objectType == ObjectType.Body)
-        {
-            // Cut tail if linked
-            if (otherGridObject.GetComponent<Body>().linked)
-            {
-                int index = otherGridObject.GetComponent<Body>().snake.bodyParts.IndexOf(otherGridObject.GetComponent<Body>());
-                otherGridObject.GetComponent<Body>().snake.CutTailUntil(index);
-                _spawner.DestroyObject(otherGridObject);
-                _snake.AddBody();
-            }
-            // Eat if not linked
-            else
-            {
-                _spawner.DestroyObject(otherGridObject);
-                _snake.AddBody();
-            }
         }
     }
 

@@ -15,7 +15,7 @@ public class Snake : MonoBehaviour
     [NonSerialized] public UnityEvent tickEvent;
     
     // Current size of snake
-    private int size;
+    [NonSerialized] public int size;
 
     // Reference to prefab
     [Header("Temp")] 
