@@ -195,6 +195,7 @@ namespace System.Collections.Generic
                 RemoveAt(Count - 1);
             }
         }
+        
         // Indexer
         public T this[int index]
         {

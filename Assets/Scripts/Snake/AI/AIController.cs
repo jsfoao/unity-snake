@@ -12,7 +12,6 @@ public class AIController : EntityController
     private AIFinder aiFinder;
 
     private List<Tile> currentTilePath;
-    [SerializeField] private bool enableMovement;
 
     // Move head to chosen tile
     private void MoveHeadToTile(Tile tile)
@@ -44,8 +43,6 @@ public class AIController : EntityController
     // To perform every tick
     public override void MovementTick()
     {
-        if (!enableMovement) { return; }
-        
         ResetPathCosts();
         GridObject lowestCostObject = aiFinder.LowestCostObject();
         if (lowestCostObject != null)

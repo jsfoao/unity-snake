@@ -59,10 +59,12 @@ public class Snake : MonoBehaviour
         for (int i = index; i < bodyParts.Count; i++)
         {
             bodyParts[i].GetComponent<SliceableBody>().Unlink();
+            bodyParts[i].gridObject.currentTile.walkable = true;
+            _spawner.spawnedObjects.Add(bodyParts[i].gridObject);
         }
         bodyParts.RemoveTailUntil(index);
     }
-    
+
     public void Create(Tile tile, int createSize)
     {
         // Spawn head on tile
@@ -91,8 +93,16 @@ public class Snake : MonoBehaviour
     public void DeathBehaviour()
     {
         Debug.Log($"{this} snake is ded!");
-        DestroySelf();
-        CheckWinner();
+        _spawner.spawnedSnakes.Remove(this);
+        GetComponent<EntityController>().enableMovement = false;
+        GetComponent<Collisions>().enableCollisions = false;
+        if (GetComponent<AIFinder>() == true)
+        {
+            GetComponent<AIFinder>().enableFinder = false;
+        }
+        CutTailUntil(0);
+        // DestroySelf();
+        // CheckWinner();
     }
 
     private void CheckWinner()

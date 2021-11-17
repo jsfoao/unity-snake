@@ -250,6 +250,10 @@ PrefabInstance:
       value: Map
       objectReference: {fileID: 0}
     - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
+      propertyPath: offset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: size.x
       value: 30
       objectReference: {fileID: 0}

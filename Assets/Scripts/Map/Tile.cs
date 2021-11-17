@@ -19,10 +19,10 @@ public class Tile : MonoBehaviour
     [NonSerialized] public int gCost;
     [SerializeField] public int hCost;
     
-    [NonSerialized] public bool walkable;
+    public bool walkable;
     public bool targeted;
     public int fCost => gCost + hCost;
-
+    
     private void Awake()
     {
         currentObjects = new List<GridObject>();

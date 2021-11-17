@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialSize: 3
   bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
-  tick: 0.4
+  tick: 0.2
 --- !u!114 &1841540332692303650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cceb3cb446f90438c9bc187faefd2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableFinder: 1
 --- !u!114 &395687837584772343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +87,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a23f3e5bee7baea4fbf8b60b19035c69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableCollisions: 1

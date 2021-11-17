@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Snake))]
 public class EntityController : MonoBehaviour, IEntityController
 {
+    [SerializeField] public bool enableMovement;
     private Direction _currentDirection;
     private Direction _desiredDirection;
     private Direction _oppositeDirection;
@@ -19,6 +20,8 @@ public class EntityController : MonoBehaviour, IEntityController
     // Set linked body positions
     public void EvaluateBodyPositions()
     {
+        if (!enableMovement) { return; }
+        
         // Start traversing from head
         var bodyNode = snake.bodyParts.Head;
 
@@ -49,6 +52,8 @@ public class EntityController : MonoBehaviour, IEntityController
     // Handle movement
     public virtual void MovementTick()
     {
+        if (!enableMovement) { return; }
+        
         // Check if last input is a valid move
         if (IsValidMovement())
         {

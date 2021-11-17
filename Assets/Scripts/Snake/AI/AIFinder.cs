@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AIFinder : MonoBehaviour
 {
+    [SerializeField] public bool enableFinder;
     private AIController aiController;
     private Spawner _spawner;
     private Pathfinding _pathfinding;
