@@ -253,10 +253,10 @@ MonoBehaviour:
   chanceSnake: 0
   chanceSuperFruit: 0.5
   spawnControlled: 0
-  initialSnakes: 5
+  initialSnakes: 50
   initialFruits: 1
   aiTick: 0.1
-  playerTick: 0.1
+  playerTick: 0.05
 --- !u!1001 &1998859221650610397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -306,11 +306,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: size.x
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1998859222532087357, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
       propertyPath: size.y
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac54c8132602ee540a1ab3c1958b7176, type: 3}
