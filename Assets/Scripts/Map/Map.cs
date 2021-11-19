@@ -1,17 +1,14 @@
 using System;
-using TMPro.SpriteAssetUtilities;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Direction = UnityEngine.Direction;
-using Slider = UnityEngine.UI.Slider;
 
 public class Map : MonoBehaviour
 {
     [Header("Spawning tiles")]
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] public Vector2Int size;
-    [SerializeField] private float offset;
+    [SerializeField] [Tooltip("Offset between each tile")] 
+    private float offset;
     [NonSerialized] public Tile[,] tileGrid;
     
     // Spawn size.x * size.y tiles
@@ -99,18 +96,6 @@ public class Map : MonoBehaviour
             for (int y = 0; y < size.y; y++)
             {
                 NeighboursAroundTile(tileGrid[x, y]);
-            }
-        }
-    }
-
-    public void ResetTileCosts()
-    {
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-            {
-                tileGrid[x, y].hCost = 0;
-                tileGrid[x, y].gCost = 0;
             }
         }
     }

@@ -13,6 +13,40 @@ public class AIController : EntityController
 
     private List<Tile> currentTilePath;
 
+    // To perform every tick
+    public override void MovementTick()
+    {
+        ResetPathCosts();
+        
+        // If can find a lowest cost object
+        GridObject lowestCostObject = aiFinder.LowestCostObject();
+        if (lowestCostObject != null)
+        {
+            Tile targetTile = lowestCostObject.currentTile;
+            
+            // Find path to object
+            currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
+
+            // Move along path if it's valid
+            if (currentTilePath != null)
+            {
+                MoveHeadToTile(currentTilePath[0]);
+                return;
+            }
+        }
+
+        // If can't find an object, it will try to move to a random valid neighbour
+        Tile randomNeighbour = RandomValidNeighbour();
+        if (randomNeighbour == null)
+        {
+            // Move up and die if there's no valid neighbours
+            MoveHeadToTile(headBody.gridObject.currentTile.neighbourTiles[(int)Direction.Up]);
+            return;
+        }
+        // Move in random direction if path wasn't found
+        MoveHeadToTile(RandomValidNeighbour());
+    }
+    
     // Move head to chosen tile
     private void MoveHeadToTile(Tile tile)
     {
@@ -38,39 +72,6 @@ public class AIController : EntityController
         // Return random possible tile
         int randomIndex = Random.Range(0, possibleTiles.Count);
         return possibleTiles[randomIndex];
-    }
-    
-    // To perform every tick
-    public override void MovementTick()
-    {
-        ResetPathCosts();
-        GridObject lowestCostObject = aiFinder.LowestCostObject();
-        if (lowestCostObject != null)
-        {
-            // Find fruit's tile
-            Tile targetTile = lowestCostObject.currentTile;
-            
-            // Find new optimal path to object
-            currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
-
-            // Move along path if it's valid
-            if (currentTilePath != null)
-            {
-                MoveHeadToTile(currentTilePath[0]);
-                return;
-            }
-        }
-
-        Tile randomNeighbour = RandomValidNeighbour();
-        // No possible valid random direction
-        if (randomNeighbour == null)
-        {
-            // Move up and die
-            MoveHeadToTile(headBody.gridObject.currentTile.neighbourTiles[(int)Direction.Up]);
-            return;
-        }
-        // Move in random direction if path wasn't found
-        MoveHeadToTile(RandomValidNeighbour());
     }
 
     private void ResetPathCosts()

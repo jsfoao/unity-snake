@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SliceableBody : MonoBehaviour
@@ -11,26 +12,25 @@ public class SliceableBody : MonoBehaviour
         body.snake = null;
         body.previousTile = null;
         body.linked = false;
+        
+        // Visuals
+        HandleRendering();
     }
 
-    private void Update()
+    private void HandleRendering()
     {
-        if (body.linked)
-        {
-            transform.localScale = new Vector3(.8f, .8f, .8f);
-            GetComponent<SpriteRenderer>().color = defaultColor;
-        }
-        else
-        {
-            transform.localScale = new Vector3(.6f, .6f, .6f);
-            GetComponent<SpriteRenderer>().color = deadColor;
-        }
+        transform.localScale = new Vector3(.6f, .6f, .6f);
+        _spriteRenderer.color = body.snake.color;
     }
 
     private void Awake()
     {
         body = GetComponent<Body>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        defaultColor = _spriteRenderer.color;
+    }
+
+    private void Start()
+    {
+        
     }
 }

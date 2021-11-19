@@ -8,8 +8,6 @@ public class Pathfinding : MonoBehaviour
     [NonSerialized] private Vector2Int startTilePos;
     [NonSerialized] private Vector2Int targetTilePos;
     
-    private const int STRAIGHT_COST = 1;
-
     private List<Tile> pathList;
     
     public List<Tile> FindPath(Tile startTile, Tile targetTile)
@@ -96,7 +94,7 @@ public class Pathfinding : MonoBehaviour
         int dy = Math.Abs(tileA.gridPosition.y - tileB.gridPosition.y);
         int dTotal = dx + dy;
 
-        cost = dTotal * STRAIGHT_COST;
+        cost = dTotal;
         return cost;
     }
 }

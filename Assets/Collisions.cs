@@ -19,7 +19,7 @@ public class Collisions : MonoBehaviour
         {
             _spawner.DestroyObject(otherGridObject);
             _snake.AddBody();
-            _spawner.SpawnObjectOfTypeInRandomPosition(otherGridObject.objectType);
+            _spawner.SpawnObjectOfTypeInRandomTile(otherGridObject.objectType);
             return;
         }
 
@@ -47,7 +47,7 @@ public class Collisions : MonoBehaviour
             else if (otherBody.linked && otherBody != otherBody.snake.bodyParts[0])
             {
                 int index = otherBody.snake.bodyParts.IndexOf(otherBody);
-                otherBody.snake.CutTailUntil(index);
+                otherBody.snake.RemoveBodiesUntil(index);
                 _spawner.DestroyObject(otherGridObject);
                 _snake.AddBody();
             }

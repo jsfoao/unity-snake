@@ -3,7 +3,6 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private static GameObject instance;
-    public HighScore highScore;
     
     private void Awake()
     {
@@ -16,7 +15,5 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
-        highScore = new HighScore();
     }
 }

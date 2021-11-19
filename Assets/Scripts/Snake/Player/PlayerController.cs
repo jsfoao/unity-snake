@@ -27,7 +27,7 @@ public class PlayerController : EntityController
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            GetComponent<Snake>().CutTailUntil(1);
+            GetComponent<Snake>().RemoveBodiesUntil(1);
         }
     }
 

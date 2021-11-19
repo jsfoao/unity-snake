@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSize: 3
+  _color: {r: 1, g: 0, b: 0, a: 1}
   bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
   tick: 0.1
 --- !u!114 &7033347185196167208

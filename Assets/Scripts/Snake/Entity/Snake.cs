@@ -11,11 +11,12 @@ public class Snake : MonoBehaviour
     [Header("Properties")]
     [SerializeField] [Tooltip("Size of snake when spawned")] 
     private int initialSize;
+    [NonSerialized] public Color color;
 
     [NonSerialized] public UnityEvent tickEvent;
     
     // Current size of snake
-    [NonSerialized] public int size;
+    [SerializeField] public int size;
 
     // Reference to prefab
     [Header("Temp")] 
@@ -26,6 +27,21 @@ public class Snake : MonoBehaviour
     private float currentTime;
     [SerializeField] private float tick;
     
+    public void Create(Tile tile, int createSize, Color snakeColor)
+    {
+        color = snakeColor;
+        // Spawn head on tile
+        Body headBody = AddBody();
+        headBody.gridObject.currentTile = tile;
+        
+        // Spawn rest of body on adjacent neighbour tiles
+        for (int i = 1; i < createSize; i++)
+        {
+            AddBody();
+        }
+    }
+
+    // Add body part to snake
     public Body AddBody()
     {
         Body body;
@@ -40,7 +56,7 @@ public class Snake : MonoBehaviour
         }
         else
         {
-            spawnedGameObject = Instantiate(bodyPrefab, bodyParts.Tail.Item.transform.position, Quaternion.identity, transform);
+            spawnedGameObject = Instantiate(bodyPrefab, bodyParts.Tail.Item.gridObject.currentTile.worldPosition, Quaternion.identity, transform);
             body = spawnedGameObject.GetComponent<Body>();
             body.previousTile = null;
             body.gridObject.currentTile = bodyParts.Tail.Item.gridObject.currentTile;
@@ -48,36 +64,26 @@ public class Snake : MonoBehaviour
             bodyParts.AddLast(body);
         }
 
+        spawnedGameObject.GetComponent<SpriteRenderer>().color = color;
         body.snake = this;
         body.linked = true;
         size++;
         return body;
     }
 
-    public void CutTailUntil(int index)
+    // Remove bodies from tail until body of index (inclusive)
+    public void RemoveBodiesUntil(int index)
     {
         for (int i = index; i < bodyParts.Count; i++)
         {
             bodyParts[i].GetComponent<SliceableBody>().Unlink();
             bodyParts[i].gridObject.currentTile.walkable = true;
             _spawner.spawnedObjects.Add(bodyParts[i].gridObject);
+            size--;
         }
         bodyParts.RemoveTailUntil(index);
     }
-
-    public void Create(Tile tile, int createSize)
-    {
-        // Spawn head on tile
-        Body headBody = AddBody();
-        headBody.gridObject.currentTile = tile;
-        
-        // Spawn rest of body on adjacent neighbour tiles
-        for (int i = 1; i < createSize; i++)
-        {
-            AddBody();
-        }
-    }
-
+    
     public void DestroySelf()
     {
         var bodyNode = bodyParts.Head;
@@ -96,12 +102,13 @@ public class Snake : MonoBehaviour
         _spawner.spawnedSnakes.Remove(this);
         GetComponent<EntityController>().enableMovement = false;
         GetComponent<Collisions>().enableCollisions = false;
-        if (GetComponent<AIFinder>() == true)
+
+        AIFinder aiFinder = GetComponent<AIFinder>();
+        if (aiFinder == true)
         {
-            GetComponent<AIFinder>().enableFinder = false;
+            aiFinder.enableFinder = false;
         }
-        CutTailUntil(0);
-        // DestroySelf();
+        RemoveBodiesUntil(0);
         // CheckWinner();
     }
 

@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Internal;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
     [Header("Spawnable entities")]
-    [SerializeField] private GameObject entitySnakePrefab;
+    [SerializeField] private GameObject aiSnakePrefab;
     [SerializeField] private GameObject playerSnakePrefab;
     [SerializeField] private GameObject[] gridObjectPrefabs;
     
@@ -16,31 +15,42 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform spawnedObjectsEmpty;
     [SerializeField] private Transform spawnedSnakesEmpty;
     
-    [SerializeField] public List<GridObject> spawnedObjects;
-    [SerializeField] public List<Snake> spawnedSnakes;
+    [NonSerialized] public List<GridObject> spawnedObjects;
+    [NonSerialized] public List<Snake> spawnedSnakes;
 
     private Map map;
     private Transform parent;
-    
-    // Methods
-    public void SpawnSnake(Tile tile, int size = 3, bool isControlled = false)
+
+    #region Methods
+    // Spawn snake on tile
+    public void SpawnSnake(Tile tile, Color color, int size = 1, bool isControlled = false)
     {
         if (tile == null)
         {
             Debug.Log("Couldn't spawn snake. Tile outside of map range");
             return;
         }
-        
         parent = spawnedSnakesEmpty;
-        GameObject prefabToSpawn = isControlled ? playerSnakePrefab : entitySnakePrefab;
+        GameObject prefabToSpawn = isControlled ? playerSnakePrefab : aiSnakePrefab;
         GameObject instance = Instantiate(prefabToSpawn, Vector3.zero, Quaternion.identity, parent);
         Snake newSnake = instance.GetComponent<Snake>();
-        newSnake.Create(tile, size);
+        newSnake.Create(tile, size, color);
         
         spawnedSnakes.Add(newSnake);
     }
 
-    public void SpawnObjectOfTypeInRandomPosition(ObjectType objectType)
+    // Spawn snake on random tile
+    public void SpawnSnakeInRandomTile(Color color, int size = 1, bool isControlled = false)
+    {
+        Tile randomValidTile = RandomValidTile();
+        if (randomValidTile != null)
+        {
+            SpawnSnake(randomValidTile, color, size, isControlled);
+        }
+    }
+    
+    // Spawn object on random tile
+    public void SpawnObjectOfTypeInRandomTile(ObjectType objectType)
     {
         Tile randomValidTile = RandomValidTile();
         if (randomValidTile != null)
@@ -50,6 +60,7 @@ public class Spawner : MonoBehaviour
         else { Debug.Log("Couldn't spawn object: No possible valid tiles"); }
     }
     
+    // Spawn object on tile
     public GameObject SpawnObjectOfType(ObjectType objectType, Tile tile)
     {
         GameObject objectToSpawn = FindPrefabOfType(objectType);
@@ -66,14 +77,16 @@ public class Spawner : MonoBehaviour
         return instance;
     }
 
+    // Destroy object
     public void DestroyObject(GridObject gridObject)
     {
         gridObject.currentTile.currentObjects.Remove(gridObject);
         spawnedObjects.Remove(gridObject);
         Destroy(gridObject.gameObject);
     }
+    #endregion
 
-    // Other
+    #region MyRegion
     private Tile RandomValidTile()
     {
         for (int i = 0; i < 100; i++)
@@ -97,24 +110,22 @@ public class Spawner : MonoBehaviour
         }
         return null;
     }
-    
+    #endregion
+
+    #region Unity Methods
     private void Awake()
     {
         map = GetComponent<Map>();
         parent = transform.GetChild(1);
+        spawnedObjects = new List<GridObject>();
+        spawnedSnakes = new List<Snake>();
     }
 
     private void Start()
     {
-        SpawnObjectOfTypeInRandomPosition(ObjectType.Fruit);
-        // SpawnSnake(map.tileGrid[0, 10], 3, true);
-        SpawnSnake(map.tileGrid[0, 10], 10, true);
-        SpawnSnake(map.tileGrid[0, 0], 7);
-        SpawnSnake(map.tileGrid[0, 2], 7);
-        SpawnSnake(map.tileGrid[0, 4], 5);
-        // SpawnSnake(map.tileGrid[0, 4], 3);
-        // SpawnSnake(map.tileGrid[0, 6], 3);
-        // SpawnSnake(map.tileGrid[0, 8], 3);
-        // SpawnSnake(map.tileGrid[0, 10], 3);
+        SpawnObjectOfTypeInRandomTile(ObjectType.Fruit);
+        SpawnSnakeInRandomTile(Color.blue);
+        SpawnSnakeInRandomTile(Color.red);
     }
+    #endregion
 }
