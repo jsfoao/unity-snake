@@ -22,6 +22,7 @@ public class Snake : MonoBehaviour
     [Header("Temp")] 
     [SerializeField] private GameObject bodyPrefab;
     private Spawner _spawner;
+    private SpawnManager _spawnManager;
     
     // Tick
     private float currentTime;
@@ -109,7 +110,7 @@ public class Snake : MonoBehaviour
             aiFinder.enableFinder = false;
         }
         RemoveBodiesUntil(0);
-        // CheckWinner();
+        CheckWinner();
     }
 
     private void CheckWinner()
@@ -117,7 +118,7 @@ public class Snake : MonoBehaviour
         // Check if winner
         if (_spawner.spawnedSnakes.Count == 1)
         {
-            Time.timeScale = 0f;
+            _spawnManager.StopSimulation();
             Debug.Log($"{_spawner.spawnedSnakes[0]} is winner winner chicken dinner!");
         }
     }
@@ -133,6 +134,7 @@ public class Snake : MonoBehaviour
     private void Awake()
     {
         bodyParts = new LList<Body>();
+        _spawnManager = FindObjectOfType<SpawnManager>();
         _spawner = FindObjectOfType<Spawner>();
         
         // Tick event listeners

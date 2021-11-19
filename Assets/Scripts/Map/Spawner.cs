@@ -22,12 +22,12 @@ public class Spawner : MonoBehaviour
 
     #region Methods
     // Spawn snake on tile
-    public void SpawnSnake(Tile tile, Color color, int size = 1, bool isControlled = false)
+    public Snake SpawnSnake(Tile tile, Color color, int size = 1, bool isControlled = false)
     {
         if (tile == null)
         {
             Debug.Log("Couldn't spawn snake. Tile outside of map range");
-            return;
+            return null;
         }
         parent = spawnedSnakesEmpty;
         GameObject prefabToSpawn = isControlled ? playerSnakePrefab : aiSnakePrefab;
@@ -36,16 +36,19 @@ public class Spawner : MonoBehaviour
         newSnake.Create(tile, size, color);
         
         spawnedSnakes.Add(newSnake);
+        return newSnake;
     }
 
     // Spawn snake on random tile
-    public void SpawnSnakeInRandomTile(Color color, int size = 1, bool isControlled = false)
+    public Snake SpawnSnakeInRandomTile(Color color, int size = 1, bool isControlled = false)
     {
         Tile randomValidTile = RandomValidTile();
         if (randomValidTile != null)
         {
-            SpawnSnake(randomValidTile, color, size, isControlled);
+            Snake newSnake = SpawnSnake(randomValidTile, color, size, isControlled);
+            return newSnake;
         }
+        return null;
     }
     
     // Spawn object on random tile
