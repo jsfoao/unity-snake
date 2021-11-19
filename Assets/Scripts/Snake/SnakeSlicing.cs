@@ -25,10 +25,18 @@ public class SnakeSlicing : MonoBehaviour
         // Collision with body: 
         else if (otherBody.linked && otherBody != otherBody.snake.bodyParts[0])
         {
-            int index = otherBody.snake.bodyParts.IndexOf(otherBody);
-            otherBody.snake.RemoveBodiesUntil(index);
-            _spawner.DestroyObject(otherBody.gridObject);
-            _snake.AddBody();
+            if (_snake.size > otherBody.snake.size)
+            {
+                int index = otherBody.snake.bodyParts.IndexOf(otherBody);
+                otherBody.snake.RemoveBodiesUntil(index);
+                _spawner.DestroyObject(otherBody.gridObject);
+                _snake.AddBody();   
+            }
+            else
+            {
+                _spawner.DestroyObject(headBody.gridObject);
+                _snake.DeathBehaviour();
+            }
         }
         // Collision with other snake
         // Collision with head: kill if bigger, die if smaller

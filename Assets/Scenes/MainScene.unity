@@ -251,7 +251,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tick: 5
   chanceSnake: 0.5
-  chanceSuperFruit: 0
+  chanceSuperFruit: 0.5
 --- !u!1001 &1998859221650610397
 PrefabInstance:
   m_ObjectHideFlags: 0

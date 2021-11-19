@@ -22,9 +22,7 @@ public class AIController : EntityController
         // If can find a lowest cost object
         GridObject lowestCostObject = aiFinder.LowestCostObject();
         if (lowestCostObject != null)
-        {
-            // Uncomment to debug
-            Debug.DrawLine(headBody.transform.position, lowestCostObject.currentTile.worldPosition, snake.color);
+        { 
             Tile targetTile = lowestCostObject.currentTile;
 
             // Find path to object

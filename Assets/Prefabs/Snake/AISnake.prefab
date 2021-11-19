@@ -50,7 +50,7 @@ MonoBehaviour:
   initialSize: 3
   size: 0
   bodyPrefab: {fileID: 1813152694199487170, guid: b7e225b9492863f4bb6a0b46dcc99748, type: 3}
-  tick: 0.5
+  tick: 0.4
 --- !u!114 &395687837584772343
 MonoBehaviour:
   m_ObjectHideFlags: 0

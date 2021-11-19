@@ -7,6 +7,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float tick = 5f;
     [SerializeField][Range(0, 1)] private float chanceSnake;
     [SerializeField][Range(0, 1)] private float chanceSuperFruit;
+    [SerializeField] [Tooltip("Spawn controlled snake")] 
+    private bool spawnControlled;
+    
     private float currentTime;
 
     private Spawner _spawner;
@@ -36,7 +39,10 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         // Spawn player snake
-        _spawner.SpawnSnakeInRandomTile(Color.black, 10, true);
+        if (spawnControlled)
+        {
+            _spawner.SpawnSnakeInRandomTile(Color.black, 1, true);
+        }
         // Spawn fruit
         _spawner.SpawnObjectOfTypeInRandomTile(PickupType.Fruit);
     }
