@@ -25,7 +25,7 @@ public class Snake : MonoBehaviour
     
     // Tick
     private float currentTime;
-    [SerializeField] private float tick;
+    [SerializeField] public float tick;
     
     public void Create(Tile tile, int createSize, Color snakeColor)
     {

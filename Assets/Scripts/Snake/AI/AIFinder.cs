@@ -30,7 +30,6 @@ public class AIFinder : MonoBehaviour
             }
         }
         if (flag == 0) { return null; }
-        Debug.DrawLine(aiController.headBody.transform.position, _spawner.spawnedObjects[index].currentTile.worldPosition, Color.green, .1f);
         return _spawner.spawnedObjects[index];
     }
     
@@ -64,6 +63,8 @@ public class AIFinder : MonoBehaviour
         int max = 99999;
         for (int i = 0; i < _spawner.spawnedObjects.Count; i++)
         {
+            if (_spawner.spawnedObjects[i] == null) { continue; }
+            
             GridObject gridObject = _spawner.spawnedObjects[i];
             
             int distanceCost = _pathfinding.TileDistanceCost(gridObject.currentTile, aiController.headBody.gridObject.currentTile);

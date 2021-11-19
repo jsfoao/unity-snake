@@ -5,6 +5,7 @@ public class GridObject : MonoBehaviour
 {
     [NonSerialized] public Tile currentTile;
     [SerializeField] public ObjectType objectType;
+    [SerializeField] public PickupType pickupType;
     [Tooltip("Higher tier means bigger weight")]
     [SerializeField] [Range(1, 5)] public int tier;
     [SerializeField] public bool enableCollision;
@@ -25,5 +26,10 @@ public class GridObject : MonoBehaviour
                 return 1 * 2;
         }
         return 0;
+    }
+
+    public virtual void OnPickup(Snake snake)
+    {
+        // Pickup behaviour
     }
 }

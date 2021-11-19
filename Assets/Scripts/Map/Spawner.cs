@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Internal;
 using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
@@ -15,7 +14,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private Transform spawnedObjectsEmpty;
     [SerializeField] private Transform spawnedSnakesEmpty;
     
-    [NonSerialized] public List<GridObject> spawnedObjects;
+    [SerializeField] public List<GridObject> spawnedObjects;
     [NonSerialized] public List<Snake> spawnedSnakes;
 
     private Map map;
@@ -50,23 +49,23 @@ public class Spawner : MonoBehaviour
     }
     
     // Spawn object on random tile
-    public void SpawnObjectOfTypeInRandomTile(ObjectType objectType)
+    public void SpawnObjectOfTypeInRandomTile(PickupType pickupType)
     {
         Tile randomValidTile = RandomValidTile();
         if (randomValidTile != null)
         {
-            SpawnObjectOfType(objectType, randomValidTile);
+            SpawnObjectOfType(pickupType, randomValidTile);
         }
         else { Debug.Log("Couldn't spawn object: No possible valid tiles"); }
     }
     
     // Spawn object on tile
-    public GameObject SpawnObjectOfType(ObjectType objectType, Tile tile)
+    public GameObject SpawnObjectOfType(PickupType pickupType, Tile tile)
     {
-        GameObject objectToSpawn = FindPrefabOfType(objectType);
+        GameObject objectToSpawn = FindPrefabOfType(pickupType);
         if (objectToSpawn == null)
         {
-            Debug.Log($"Couldn't find object of type {objectType}");
+            Debug.Log($"Couldn't find object of type {pickupType}");
             return null;
         }
         GameObject instance = Instantiate(objectToSpawn, tile.worldPosition, Quaternion.identity, spawnedObjectsEmpty);
@@ -86,7 +85,7 @@ public class Spawner : MonoBehaviour
     }
     #endregion
 
-    #region MyRegion
+    #region Other Methods
     private Tile RandomValidTile()
     {
         for (int i = 0; i < 100; i++)
@@ -98,17 +97,29 @@ public class Spawner : MonoBehaviour
         return null;
     }
 
-    private GameObject FindPrefabOfType(ObjectType objectType)
+    private GameObject FindPrefabOfType(PickupType pickupType)
     {
         foreach (var prefab in gridObjectPrefabs)
         {
             GridObject currentObject = prefab.GetComponent<GridObject>();
-            if (currentObject.objectType == objectType)
+            if (currentObject.pickupType == pickupType)
             {
                 return prefab;
             }
         }
         return null;
+    }
+
+    public Color RandomColor()
+    {
+        Color color = new Color
+        {
+            r = Random.Range(0f, .7f),
+            g = Random.Range(0f, .7f),
+            b = Random.Range(0f, .7f),
+            a = 1f
+        };
+        return color;
     }
     #endregion
 
@@ -119,13 +130,6 @@ public class Spawner : MonoBehaviour
         parent = transform.GetChild(1);
         spawnedObjects = new List<GridObject>();
         spawnedSnakes = new List<Snake>();
-    }
-
-    private void Start()
-    {
-        SpawnObjectOfTypeInRandomTile(ObjectType.Fruit);
-        SpawnSnakeInRandomTile(Color.blue);
-        SpawnSnakeInRandomTile(Color.red);
     }
     #endregion
 }

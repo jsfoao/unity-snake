@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7238616367967052404}
   - component: {fileID: 3666804176219160300}
-  - component: {fileID: -1236724689385805339}
+  - component: {fileID: -6827326563073135741}
   m_Layer: 0
-  m_Name: Loot
+  m_Name: SuperFruit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 7482667652216324306, guid: 762eeefe8d97adc48bd2b36e24ea0d4c, type: 3}
-  m_Color: {r: 0.11534355, g: 0.36735004, b: 0.9056604, a: 1}
+  m_Color: {r: 0.26900145, g: 0.67095417, b: 0.8773585, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-1236724689385805339
+--- !u!114 &-6827326563073135741
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -92,10 +92,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1813152694199487170}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 639a8033571f5df4f9dd3f67579a2b45, type: 3}
+  m_Script: {fileID: 11500000, guid: 769a2850ba2c68340b5b8db483ed0b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 2
-  pickupType: 0
-  tier: 2
+  pickupType: 3
+  tier: 5
   enableCollision: 1
+  speedPercentage: 0.5

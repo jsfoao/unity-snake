@@ -12,18 +12,21 @@ public class AIController : EntityController
     private AIFinder aiFinder;
 
     private List<Tile> currentTilePath;
-
+    private Direction previousRandomDirection;
+    
     // To perform every tick
     public override void MovementTick()
     {
         ResetPathCosts();
-        
+        if (headBody == null) { return; }
         // If can find a lowest cost object
         GridObject lowestCostObject = aiFinder.LowestCostObject();
         if (lowestCostObject != null)
         {
+            // Uncomment to debug
+            Debug.DrawLine(headBody.transform.position, lowestCostObject.currentTile.worldPosition, snake.color);
             Tile targetTile = lowestCostObject.currentTile;
-            
+
             // Find path to object
             currentTilePath = pathfinding.FindPath(headBody.gridObject.currentTile, targetTile);
 
@@ -36,15 +39,15 @@ public class AIController : EntityController
         }
 
         // If can't find an object, it will try to move to a random valid neighbour
-        Tile randomNeighbour = RandomValidNeighbour();
-        if (randomNeighbour == null)
+        Tile randomValidTile = RandomValidTile();
+        if (randomValidTile == null)
         {
             // Move up and die if there's no valid neighbours
             MoveHeadToTile(headBody.gridObject.currentTile.neighbourTiles[(int)Direction.Up]);
             return;
         }
-        // Move in random direction if path wasn't found
-        MoveHeadToTile(RandomValidNeighbour());
+        // Move to random tile if path wasn't found
+        MoveHeadToTile(randomValidTile);
     }
     
     // Move head to chosen tile
@@ -54,8 +57,8 @@ public class AIController : EntityController
         EvaluateBodyPositions();
     }
 
-    // Randomize until finding valid neighbour
-    private Tile RandomValidNeighbour()
+    // Randomize until finding valid direction
+    private Tile RandomValidTile()
     {
         List<Tile> possibleTiles = new List<Tile>();
         foreach (Tile tile in headBody.gridObject.currentTile.neighbourTiles)
