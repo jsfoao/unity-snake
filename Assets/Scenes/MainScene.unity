@@ -249,9 +249,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66787ba6b11fe2041ba15685e9f976bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tick: 5
-  chanceSnake: 0.5
+  tick: 3
+  chanceSnake: 0
   chanceSuperFruit: 0.5
+  spawnControlled: 0
+  initialSnakes: 5
+  initialFruits: 1
 --- !u!1001 &1998859221650610397
 PrefabInstance:
   m_ObjectHideFlags: 0

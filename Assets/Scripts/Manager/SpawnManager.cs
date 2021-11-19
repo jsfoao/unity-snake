@@ -5,14 +5,22 @@ public class SpawnManager : MonoBehaviour
 {
     [Header("Settings")]
     [SerializeField] private float tick = 5f;
-    [SerializeField][Range(0, 1)] private float chanceSnake;
-    [SerializeField][Range(0, 1)] private float chanceSuperFruit;
-    [SerializeField] [Tooltip("Spawn controlled snake")] 
+    [SerializeField][Range(0, 1)][Tooltip("Chance of snake to spawn every tick")]
+    private float chanceSnake;
+    [SerializeField][Range(0, 1)][Tooltip("Chance of super fruit to spawn every tick")]
+    private float chanceSuperFruit;
+    
+    [Header("Spawning")]
+    [SerializeField][Tooltip("Spawn controlled snake")] 
     private bool spawnControlled;
+    [SerializeField][Tooltip("Amount of snakes to spawn on start")]
+    private int initialSnakes;
+    [SerializeField][Tooltip("Amount of fruits to spawn on start")]
+    private int initialFruits;
     
     private float currentTime;
-
     private Spawner _spawner;
+    
     private void Update()
     {
         currentTime -= Time.deltaTime;
@@ -43,8 +51,18 @@ public class SpawnManager : MonoBehaviour
         {
             _spawner.SpawnSnakeInRandomTile(Color.black, 1, true);
         }
-        // Spawn fruit
-        _spawner.SpawnObjectOfTypeInRandomTile(PickupType.Fruit);
+
+        // Spawn initial AI snakes
+        for (int i = 0; i < initialSnakes; i++)
+        {
+            _spawner.SpawnSnakeInRandomTile(_spawner.RandomColor());
+        }
+        
+        // Spawn initial fruits
+        for (int i = 0; i < initialFruits; i++)
+        {
+            _spawner.SpawnObjectOfTypeInRandomTile(PickupType.Fruit);
+        }
     }
 
     private void Awake()
