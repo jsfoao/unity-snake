@@ -1,5 +1,5 @@
 ## About
-This repo contains an implementation of Snake with **A* pathfinding**. 
+This repo contains an implementation of Snake with **A*** **pathfinding**.  
 
 ### Goals
  - Implement a working and efficient **A* pathfinding** algorithm with weighed pickups.
