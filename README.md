@@ -34,5 +34,3 @@ This repo contains an implementation of Snake with **A* pathfinding**.
 **Possible solution:** Calculate new path only if there's a changes to the current path or if new objects are spawned inside a certain range.
 
 ## Sources & Inspiration
-Dream Car Builder: https://store.steampowered.com/app/488550/Dream_Car_Builder/
-Main Assembly: https://store.steampowered.com/app/1078920/Main_Assembly/
