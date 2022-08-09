@@ -1,5 +1,5 @@
 ## About
-This repo contains an implementation of Snake with **A*** **pathfinding**.  
+This repo contains an implementation of Snake with **A*** **pathfinding**. 
 
 ### Goals
  - Implement a working and efficient **A* pathfinding** algorithm with weighed pickups.
@@ -12,7 +12,7 @@ This repo contains an implementation of Snake with **A*** **pathfinding**.
 | Grid Generation| **Grid map** generator with neighbour checking |
 | Screen Wrapping | **Screen wrapping** on map's edgess |
 | Snake Linked List | Implementation of **linked list** used in snakes |
-| A* Pathfinding | **A* pathfinding** for snake's AI with weighed pickups |
+| A* Pathfinding | **A*** **pathfinding**.  for snake's AI with weighed pickups |
 | Snake Slicing | Break snake's linked lists in **runtime** |
 
 ### Grid Generation
@@ -34,3 +34,5 @@ This repo contains an implementation of Snake with **A*** **pathfinding**.
 **Possible solution:** Calculate new path only if there's a changes to the current path or if new objects are spawned inside a certain range.
 
 ## Sources & Inspiration
+Dream Car Builder: https://store.steampowered.com/app/488550/Dream_Car_Builder/
+Main Assembly: https://store.steampowered.com/app/1078920/Main_Assembly/
