@@ -34,7 +34,7 @@ public class Map : MonoBehaviour
     }
     
     // Check if neighbour is valid (exists)
-    private bool IsEdgeTile(Tile tile, Vector2Int positionToCheck)
+    private bool SetEdgeTile(Tile tile, Vector2Int positionToCheck)
     {
         // Right edge
         if (positionToCheck.x >= size.x)
@@ -81,7 +81,7 @@ public class Map : MonoBehaviour
         // Check validity of all positions
         for (int i = 0; i < positions.Length; i++)
         {
-            if (!IsEdgeTile(tile, positions[i]))
+            if (!SetEdgeTile(tile, positions[i]))
             {
                 tile.neighbourTiles[i] = tileGrid[positions[i].x, positions[i].y];
             }
