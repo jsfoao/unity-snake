@@ -33,7 +33,7 @@ public class Map : MonoBehaviour
         }
     }
     
-    // Check if neighbour is valid (exists)
+    // Check if neighbour is valid and assigns it
     private bool SetEdgeTile(Tile tile, Vector2Int positionToCheck)
     {
         // Right edge
